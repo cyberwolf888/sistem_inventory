@@ -1,0 +1,12 @@
+framework/node_modules
+framework/public/hot
+framework/public/storage
+framework/storage/*.key
+framework/vendor
+framework/.env
+framework/.env.backup
+framework/.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
