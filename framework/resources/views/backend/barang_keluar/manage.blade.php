@@ -15,7 +15,7 @@
         <div class="kt-container ">
             <div class="kt-subheader__main">
                 <h3 class="kt-subheader__title">
-                    Barang </h3>
+                    Barang Keluar </h3>
                 <div class="kt-subheader__breadcrumbs">
                     <a href="#" class="kt-subheader__breadcrumbs-home">
                         <i class="flaticon2-shelter"></i>
@@ -26,7 +26,7 @@
                     </a>
                     <span class="kt-subheader__breadcrumbs-separator"></span>
                     <a href="" class="kt-subheader__breadcrumbs-link">
-                        Barang
+                        Barang Keluar
                     </a>
                     <span class="kt-subheader__breadcrumbs-separator"></span>
                     <a href="" class="kt-subheader__breadcrumbs-link">
@@ -47,13 +47,13 @@
                         <i class="kt-font-brand flaticon2-line-chart"></i>
                     </span>
                     <h3 class="kt-portlet__head-title">
-                        Data Barang
+                        Data Barang Keluar
                     </h3>
                 </div>
                 <div class="kt-portlet__head-toolbar">
                     <div class="kt-portlet__head-wrapper">
                         <div class="kt-portlet__head-actions">
-                            <a href="{{ route('backend.barang.data.create') }}" class="btn btn-brand btn-elevate btn-icon-sm">
+                            <a href="{{ route('backend.barang_keluar.create') }}" class="btn btn-brand btn-elevate btn-icon-sm">
                                 <i class="la la-plus"></i>
                                 Tambah Data Baru
                             </a>
@@ -67,7 +67,7 @@
                     <div class="row align-items-center">
                         <div class="col-xl-8 order-2 order-xl-1">
                             <div class="row align-items-center">
-                                <div class="col-md-3 kt-margin-b-20-tablet-and-mobile">
+                                <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
                                     <div class="kt-input-icon kt-input-icon--left">
                                         <input type="text" class="form-control" placeholder="Search..." id="generalSearch">
                                         <span class="kt-input-icon__icon kt-input-icon__icon--left">
@@ -75,7 +75,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="col-md-3 kt-margin-b-20-tablet-and-mobile">
+                                <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
                                     <div class="kt-form__group kt-form__group--inline">
                                         <div class="kt-form__label">
                                             <label>Status:</label>
@@ -83,29 +83,9 @@
                                         <div class="kt-form__control">
                                             <select class="form-control bootstrap-select" id="kt_form_status">
                                                 <option value="">All</option>
-                                                <option value="1">Aktif</option>
-                                                <option value="2">Tidak Aktif</option>
+                                                <option value="1">Selesai</option>
+                                                <option value="2">Proses</option>
                                             </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 kt-margin-b-20-tablet-and-mobile">
-                                    <div class="kt-form__group kt-form__group--inline">
-                                        <div class="kt-form__label">
-                                            <label>Kategori:</label>
-                                        </div>
-                                        <div class="kt-form__control">
-                                            {!! Form::select('status', App\Models\Category::where('status','1')->pluck('name','id'), [], ['placeholder'=>'All', 'id'=>'kt_form_kategori', 'class'=>'form-control bootstrap-select','required']); !!}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 kt-margin-b-20-tablet-and-mobile">
-                                    <div class="kt-form__group kt-form__group--inline">
-                                        <div class="kt-form__label">
-                                            <label>Vendor:</label>
-                                        </div>
-                                        <div class="kt-form__control">
-                                            {!! Form::select('status', App\Models\Vendor::where('status','1')->pluck('name','id'), [], ['placeholder'=>'All', 'id'=>'kt_form_vendor', 'class'=>'form-control bootstrap-select','required']); !!}
                                         </div>
                                     </div>
                                 </div>
@@ -155,7 +135,7 @@
                 // datasource definition
                 data: {
                     type: 'remote',
-                    source: '{{ route('backend.barang.data.json_data') }}',
+                    source: '{{ route('backend.barang_keluar.json_data') }}',
                     pageSize: 10,
                 },
                 order: [],
@@ -189,36 +169,19 @@
                         }
                     },
                     {
-                        field: 'name',
-                        title: 'Nama Barang',
+                        field: 'id',
+                        title: 'No Faktur',
                     },
                     {
-                        field: 'id_category',
-                        title: 'Kategori Barang',
+                        field: 'id_supplier',
+                        title: 'Supplier',
                         template: function(row,i) {
-                            return row.category.name;
+                            return row.supplier.name;
                         }
                     },
                     {
-                        field: 'id_vendor',
-                        title: 'Vendor',
-                        template: function(row,i) {
-                            return row.vendor.name;
-                        }
-                    },
-                    {
-                        field: 'price',
-                        title: 'Harga',
-                        template: function (row) {
-                            return row.price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-                        }
-                    },
-                    {
-                        field: 'warranty',
-                        title: 'Garansi',
-                        template: function(row,i) {
-                            return row.warranty + ' Bulan';
-                        }
+                        field: 'transaction_date',
+                        title: 'Tanggal Transaksi',
                     },
                     {
                         field: 'status',
@@ -226,17 +189,11 @@
                         // callback function support for column rendering
                         template: function(row) {
                             var status = {
-                                1: {'title': 'Aktif', 'class': 'kt-badge--success'},
-                                2: {'title': 'Tidak Aktif', 'class': ' kt-badge--danger'}
+                                1: {'title': 'Selesai', 'class': 'kt-badge--success'},
+                                2: {'title': 'Proses', 'class': ' kt-badge--danger'}
                             };
                             return '<span class="kt-badge ' + status[row.status].class + ' kt-badge--inline kt-badge--pill">' + status[row.status].title + '</span>';
                         },
-                    },
-                    {
-                        field: 'created_at',
-                        title: 'Tanggal Dibuat',
-                        type: 'date',
-                        format: 'DD/MM/YYYY',
                     },
                     {
                         field: 'Actions',
@@ -247,11 +204,8 @@
                         overflow: 'visible',
                         template: function(row) {
                             return '\
-                            <a href="' + row.link_edit + '" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit Data">\
+                            <a href="'+ row.link_detail +'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit Data">\
                                 <i class="la la-edit"></i>\
-                            </a>\
-                            <a href="javascript:;" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete Data">\
-                                <i class="la la-trash"></i>\
                             </a>\
                         ';
                         },
@@ -259,17 +213,11 @@
 
             });
 
-            $('#kt_form_status').on('change', function() {
-                datatable.search($(this).val().toLowerCase(), 'status');
-            });
-            $('#kt_form_kategori').on('change', function() {
-                datatable.search($(this).val().toLowerCase(), 'id_category');
-            });
-            $('#kt_form_vendor').on('change', function() {
-                datatable.search($(this).val().toLowerCase(), 'id_vendor');
-            });
+        $('#kt_form_status').on('change', function() {
+            datatable.search($(this).val().toLowerCase(), 'status');
+        });
 
-            $('#kt_form_status,#kt_form_kategori,#kt_form_vendor').selectpicker();
+        $('#kt_form_status,#kt_form_type').selectpicker();
 
         };
 

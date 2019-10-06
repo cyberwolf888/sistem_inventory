@@ -199,7 +199,7 @@
                         overflow: 'visible',
                         template: function(row) {
                             return '\
-                            <a href="' + row.link_edit + ' "btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit Data">\
+                            <a href="' + row.link_edit + '" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit Data">\
                                 <i class="la la-edit"></i>\
                             </a>\
                             <a href="javascript:;" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete Data">\

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class StockBarang extends Model
 {
     protected $table = 'stock_barang';
-    protected $appends = ['link_edit'];
+    protected $appends = ['link_edit','nama_barang'];
 
     public function barang()
     {
@@ -18,5 +18,10 @@ class StockBarang extends Model
     {
         return route('backend.barang.stock.edit',['id'=>$this->id]);
 
+    }
+
+    public function getNamaBarangAttribute()
+    {
+        return $this->serial_number.' - '.$this->barang->name;
     }
 }

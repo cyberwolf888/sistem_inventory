@@ -83,5 +83,29 @@ Route::group(['prefix' => 'backend', 'middleware' => 'auth', 'as'=>'backend'], f
         });
     });
 
+    /*
+   |--------------------------------------------------------------------------
+   | Data Barang Masuk Web Routes
+   |--------------------------------------------------------------------------
+   */
+    Route::group(['prefix' => 'barang-masuk','as'=>'.barang_masuk'], function() {
+        Route::get('/', 'Backend\BarangMasukController@index')->name('.manage');
+        Route::any('/json_data', 'Backend\BarangMasukController@json_data')->name('.json_data');
+        Route::get('/create', 'Backend\BarangMasukController@create')->name('.create');
+        Route::post('/create', 'Backend\BarangMasukController@store')->name('.store');
+        Route::get('/detail/{id}', 'Backend\BarangMasukController@detail')->name('.detail');
+    });
 
+    /*
+   |--------------------------------------------------------------------------
+   | Data Barang Keluar Web Routes
+   |--------------------------------------------------------------------------
+   */
+    Route::group(['prefix' => 'barang-keluar','as'=>'.barang_keluar'], function() {
+        Route::get('/', 'Backend\BarangKeluarController@index')->name('.manage');
+        Route::any('/json_data', 'Backend\BarangKeluarController@json_data')->name('.json_data');
+        Route::get('/create', 'Backend\BarangKeluarController@create')->name('.create');
+        Route::post('/create', 'Backend\BarangKeluarController@store')->name('.store');
+        Route::get('/detail/{id}', 'Backend\BarangKeluarController@detail')->name('.detail');
+    });
 });

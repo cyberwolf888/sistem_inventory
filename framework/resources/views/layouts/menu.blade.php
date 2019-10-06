@@ -45,8 +45,8 @@
 										<li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--rel" data-ktmenu-submenu-toggle="click" aria-haspopup="true"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><span class="kt-menu__link-text">Transaksi</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
 											<div class="kt-menu__submenu kt-menu__submenu--classic kt-menu__submenu--left">
 												<ul class="kt-menu__subnav">
-													<li class="kt-menu__item" aria-haspopup="true">
-														<a href="dashboards/fluid&demo=demo4.html" class="kt-menu__link ">
+													<li class="kt-menu__item @if (Str::is('*.barang_masuk.*', Route::currentRouteName())) kt-menu__item--active @endif" aria-haspopup="true">
+														<a href="{{ route('backend.barang_masuk.manage') }}" class="kt-menu__link ">
 															<span class="kt-menu__link-icon">
 																<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
 																	<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -59,8 +59,8 @@
 															<span class="kt-menu__link-text">Barang Masuk</span>
 														</a>
 													</li>
-													<li class="kt-menu__item" aria-haspopup="true">
-														<a href="dashboards/fluid&demo=demo4.html" class="kt-menu__link ">
+													<li class="kt-menu__item @if (Str::is('*.barang_keluar.*', Route::currentRouteName())) kt-menu__item--active @endif" aria-haspopup="true">
+														<a href="{{ route('backend.barang_keluar.manage') }}" class="kt-menu__link ">
 															<span class="kt-menu__link-icon">
 																<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
 																	<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">

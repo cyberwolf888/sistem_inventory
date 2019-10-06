@@ -86,7 +86,11 @@
                                 </div>
                                 <div class="form-group">
                                     {!! Form::label('receive_date', 'Tanggal Masuk'); !!}
-                                    {!! Form::text('receive_date', $model->receive_date, ['class'=>'form-control','required']); !!}
+                                    {!! Form::text('receive_date', isset($update) ? date('d/m/Y',strtotime($model->receive_date)) : null, ['id'=>'receive_date', 'class'=>'form-control','required']); !!}
+                                </div>
+                                <div class="form-group">
+                                    {!! Form::label('location', 'Nomer Rak/Lokasi Penyimpanan'); !!}
+                                    {!! Form::text('location', $model->location, ['class'=>'form-control','required']); !!}
                                 </div>
                                 <div class="form-group">
                                     {!! Form::label('status', 'Status'); !!}
@@ -119,5 +123,47 @@
 @endpush
 
 @push('page_script')
+<script>
+    // Class definition
 
+    var KTBootstrapDatepicker = function () {
+
+        var arrows;
+        if (KTUtil.isRTL()) {
+            arrows = {
+                leftArrow: '<i class="la la-angle-right"></i>',
+                rightArrow: '<i class="la la-angle-left"></i>'
+            }
+        } else {
+            arrows = {
+                leftArrow: '<i class="la la-angle-left"></i>',
+                rightArrow: '<i class="la la-angle-right"></i>'
+            }
+        }
+
+        // Private functions
+        var demos = function () {
+            // minimum setup
+            $('#receive_date').datepicker({
+                rtl: KTUtil.isRTL(),
+                format: 'dd/mm/yyyy',
+                todayHighlight: true,
+                autoclose: true,
+                orientation: "bottom left",
+                templates: arrows
+            });
+        }
+
+        return {
+            // public functions
+            init: function() {
+                demos();
+            }
+        };
+    }();
+
+    jQuery(document).ready(function() {
+        KTBootstrapDatepicker.init();
+    });
+</script>
 @endpush
