@@ -14,6 +14,11 @@ class StockBarang extends Model
         return $this->belongsTo( 'App\Models\Barang','id_barang');
     }
 
+    public function barang_keluar_detail()
+    {
+        return $this->hasOne( 'App\Models\BarangKeluarDetail','id_barang');
+    }
+
     public function getLinkEditAttribute()
     {
         return route('backend.barang.stock.edit',['id'=>$this->id]);

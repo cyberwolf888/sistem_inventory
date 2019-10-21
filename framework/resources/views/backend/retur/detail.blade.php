@@ -15,7 +15,7 @@
         <div class="kt-container ">
             <div class="kt-subheader__main">
                 <h3 class="kt-subheader__title">
-                    Barang Keluar </h3>
+                    Retur </h3>
                 <div class="kt-subheader__breadcrumbs">
                     <a href="#" class="kt-subheader__breadcrumbs-home">
                         <i class="flaticon2-shelter"></i>
@@ -25,8 +25,8 @@
                         Backend
                     </a>
                     <span class="kt-subheader__breadcrumbs-separator"></span>
-                    <a href="{{ route('backend.barang_keluar.manage') }}" class="kt-subheader__breadcrumbs-link">
-                        Barang Keluar
+                    <a href="{{ route('backend.retur.manage') }}" class="kt-subheader__breadcrumbs-link">
+                        Retur
                     </a>
                     <span class="kt-subheader__breadcrumbs-separator"></span>
                     <a href="" class="kt-subheader__breadcrumbs-link">
@@ -48,7 +48,7 @@
                     <div class="kt-portlet__head">
                         <div class="kt-portlet__head-label">
                             <h3 class="kt-portlet__head-title">
-                                Barang Keluar
+                                Retur
                             </h3>
                         </div>
                     </div>
@@ -66,8 +66,8 @@
                             <p class="form-control-static">{{ $model->supplier->name }}</p>
                         </div>
                         <div class="form-group">
-                            {!! Form::label('transaction_date', 'Tanggal Transaksi'); !!}
-                            <p class="form-control-static">{{ date('d/m/Y',strtotime($model->transaction_date)) }}</p>
+                            {!! Form::label('retur_date', 'Tanggal Retur'); !!}
+                            <p class="form-control-static">{{ date('d/m/Y',strtotime($model->retur_date)) }}</p>
                         </div>
                         <div class="form-group">
                             {!! Form::label('description', 'Keterangan'); !!}
@@ -75,12 +75,12 @@
                         </div>
                         <div class="form-group">
                             {!! Form::label('status', 'Status'); !!}
-                            <p class="form-control-static">{{ ['1'=>'Selesai','2'=>'Proses'][$model->status]}}</p>
+                            <p class="form-control-static">{{ ['1'=>'Proses di Gudang','2'=>'Dikirim Ke Vendor','3'=>'Proses di Vendor','4'=>'Selesai'][$model->status]}}</p>
                         </div>
                     </div>
                     <div class="kt-portlet__foot">
                         <div class="kt-form__actions">
-                            <a href="{{ route('backend.barang_keluar.manage') }}" class="btn btn-secondary">Kembali</a>
+                            <a href="{{ route('backend.retur.manage') }}" class="btn btn-secondary">Kembali</a>
                         </div>
                     </div>
 
@@ -116,7 +116,7 @@
                             @foreach($model->detail as $detail)
                             <tr>
                                 <th scope="row">{{ $no }}</th>
-                                <td>{{ $detail->barang->name }}</td>
+                                <td>{{ $detail->stock->barang->name }}</td>
                                 <td>{{ $detail->stock->serial_number }}</td>
                             </tr>
                             @php $no++; @endphp

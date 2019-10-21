@@ -29,6 +29,7 @@ class Barang extends Model
 		return route('backend.barang.data.edit',['id'=>$this->id]);
 
     }
+
     public function getNamaSkuAttribute()
     {
         return $this->name.' - '.$this->sku;

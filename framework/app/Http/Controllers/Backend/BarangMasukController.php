@@ -65,6 +65,11 @@ class BarangMasukController extends Controller
 
     }
 
+    public function edit($id)
+    {
+        //TODO edit barang keluar
+    }
+
     public function detail($id)
     {
         $model = BarangMasuk::findOrFail($id);

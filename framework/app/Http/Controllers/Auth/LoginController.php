@@ -39,7 +39,7 @@ class LoginController extends Controller
 
     protected function authenticated($request, $user)
     {
-        if($user->isActive == 0){
+        if($user->isActive == 2){
             $this->logout($request);
         }
 
@@ -54,6 +54,14 @@ class LoginController extends Controller
         }
 
         if($user->can('admin-access')) {
+            return redirect()->route( 'backend.dashboard');
+        }
+
+        if($user->can('supplier-access')) {
+            //return redirect()->route( 'backend.dashboard');
+        }
+
+        if($user->can('petugas-access')) {
             return redirect()->route( 'backend.dashboard');
         }
 

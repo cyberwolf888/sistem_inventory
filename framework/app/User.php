@@ -37,6 +37,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected $appends = ['link_edit'];
+
     public function getStatus()
     {
         return $this->isActive == 1 ? 'Active' : 'Suspend';
@@ -49,11 +51,10 @@ class User extends Authenticatable
         return $status;
 
     }
-    public function getLabelTypeAttribute($value)
-    {
-        $type = $this->type == 1 ? 'Admin' : 'Operator';
 
-        return $type;
+    public function getLinkEditAttribute()
+    {
+        return route('backend.user.edit',['id'=>$this->id]);
 
     }
 }

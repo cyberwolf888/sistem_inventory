@@ -105,7 +105,7 @@
 
 										<!--begin: Navigation -->
 										<div class="kt-notification">
-											<a href="#" class="kt-notification__item">
+											<a href="{{ route('backend.user.edit', Auth::user()->id) }}" class="kt-notification__item">
 												<div class="kt-notification__item-icon">
 													<i class="flaticon2-calendar-3 kt-font-success"></i>
 												</div>
@@ -118,7 +118,7 @@
 													</div>
 												</div>
 											</a>
-											
+
 											<div class="kt-notification__custom kt-space-between">
 												<a href="{{ route('logout') }}" class="btn btn-label btn-label-brand btn-sm btn-bold" onclick="event.preventDefault();
 												document.getElementById('logout-form').submit();">Sign Out</a>

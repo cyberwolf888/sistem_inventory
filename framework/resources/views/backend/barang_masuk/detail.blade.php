@@ -70,7 +70,7 @@
                             <p class="form-control-static">{{ date('d/m/Y',strtotime($model->transaction_date)) }}</p>
                         </div>
                         <div class="form-group">
-                            {!! Form::label('description', 'No description'); !!}
+                            {!! Form::label('description', 'Keterangan'); !!}
                             <p class="form-control-static">{{ $model->description }}</p>
                         </div>
                         <div class="form-group">

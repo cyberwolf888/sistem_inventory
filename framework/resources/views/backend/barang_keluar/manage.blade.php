@@ -84,7 +84,9 @@
                                             <select class="form-control bootstrap-select" id="kt_form_status">
                                                 <option value="">All</option>
                                                 <option value="1">Selesai</option>
-                                                <option value="2">Proses</option>
+                                                <option value="2">Pesanan Supplier</option>
+                                                <option value="3">Dikirim Ke Supplier</option>
+                                                <option value="4">Dibatalkan</option>
                                             </select>
                                         </div>
                                     </div>
@@ -190,7 +192,9 @@
                         template: function(row) {
                             var status = {
                                 1: {'title': 'Selesai', 'class': 'kt-badge--success'},
-                                2: {'title': 'Proses', 'class': ' kt-badge--danger'}
+                                2: {'title': 'Pesanan Supplier', 'class': ' kt-badge--warning'},
+                                3: {'title': 'Dikirim Ke Supplier', 'class': ' kt-badge--info'},
+                                4: {'title': 'Dibatalkan', 'class': ' kt-badge--danger'},
                             };
                             return '<span class="kt-badge ' + status[row.status].class + ' kt-badge--inline kt-badge--pill">' + status[row.status].title + '</span>';
                         },
@@ -204,7 +208,7 @@
                         overflow: 'visible',
                         template: function(row) {
                             return '\
-                            <a href="'+ row.link_detail +'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit Data">\
+                            <a href="'+ row.link_detail +'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Detail Transaksi">\
                                 <i class="la la-edit"></i>\
                             </a>\
                         ';

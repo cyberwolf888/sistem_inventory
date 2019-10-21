@@ -13,10 +13,22 @@ class StockController extends Controller
         return view('backend.stock.manage');
     }
 
-    public function json_data()
+    public function json_data(Request $request)
     {
-        $model = StockBarang::with(['barang'])->orderBy('id','DESC')->get();
-        return response()->json($model);
+        $model = StockBarang::with(['barang'])->orderBy('id','DESC');
+
+        if($request->has( 'q') && $request->has( 'status')){
+            $model = StockBarang::with(['barang'])
+                                ->where( 'serial_number', 'like', '%' . $request->q . '%')
+                                ->where('status', $request->status)
+                                ->orderBy('id','DESC');
+        }else if($request->has( 'q')){
+            $model = StockBarang::with(['barang'])
+                                ->where( 'serial_number', 'like', '%' . $request->q . '%')
+                //->where('status',1)
+                                ->orderBy('id','DESC');
+        }
+        return response()->json($model->get());
     }
 
     public function create()

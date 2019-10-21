@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 06 Okt 2019 pada 11.51
+-- Generation Time: 21 Okt 2019 pada 17.03
 -- Versi Server: 10.1.30-MariaDB
 -- PHP Version: 7.2.1
 
@@ -57,11 +57,11 @@ INSERT INTO `barang` (`id`, `id_category`, `id_vendor`, `name`, `sku`, `price`, 
 --
 
 CREATE TABLE `barang_keluar` (
-  `id` varchar(10) NOT NULL,
+  `id` varchar(20) NOT NULL,
   `id_supplier` int(11) DEFAULT NULL,
   `transaction_date` date DEFAULT NULL,
   `description` text,
-  `staus` tinyint(1) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -74,7 +74,7 @@ CREATE TABLE `barang_keluar` (
 
 CREATE TABLE `barang_keluar_detail` (
   `id` int(11) NOT NULL,
-  `id_barang_keluar` varchar(10) DEFAULT NULL,
+  `id_barang_keluar` varchar(20) DEFAULT NULL,
   `id_barang` int(11) DEFAULT NULL,
   `id_stock` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -196,11 +196,25 @@ INSERT INTO `kategori` (`id`, `name`, `status`, `created_at`, `updated_at`) VALU
 --
 
 CREATE TABLE `retur` (
-  `id` int(11) NOT NULL,
-  `id_transaksi` varchar(10) DEFAULT NULL,
-  `status` tinyint(1) DEFAULT NULL,
+  `id` varchar(20) NOT NULL,
+  `id_supplier` int(11) DEFAULT NULL,
   `retur_date` date DEFAULT NULL,
-  `keterangan` varchar(50) DEFAULT NULL,
+  `description` varchar(50) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `retur_detail`
+--
+
+CREATE TABLE `retur_detail` (
+  `id` bigint(20) NOT NULL,
+  `id_retur` varchar(20) DEFAULT NULL,
+  `id_stock` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -231,32 +245,16 @@ INSERT INTO `stock_barang` (`id`, `id_barang`, `serial_number`, `receive_date`, 
 (2, 1, 'SN0929902348', '2019-10-01', 'B-1', 1, '2019-10-06 05:38:16', '2019-10-06 05:38:16'),
 (3, 1, 'SB00384BU', '2019-09-26', 'BR-02', 1, '2019-10-06 05:40:27', '2019-10-06 05:52:05'),
 (4, 1, 'SN092348SJJK', '2019-10-16', 'B-2', 1, '2019-10-06 05:51:26', '2019-10-06 05:51:26'),
-(5, 2, 'SN0902394023984', '2019-10-06', 'B-1', 1, '2019-10-06 05:52:59', '2019-10-06 05:52:59'),
-(6, 2, 'SN023409384BH', '2019-10-06', 'C-3', 1, '2019-10-06 05:53:20', '2019-10-06 05:53:20'),
-(7, 1, 'ABCD01E', '2019-10-06', 'Rak Depan', 1, '2019-10-06 07:36:47', '2019-10-06 07:36:47'),
+(5, 2, 'SN0902394023984', '2019-10-06', 'B-1', 1, '2019-10-06 05:52:59', '2019-10-07 16:14:34'),
+(6, 2, 'SN023409384BH', '2019-10-06', 'C-3', 2, '2019-10-06 05:53:20', '2019-10-07 16:30:28'),
+(7, 1, 'ABCD01E', '2019-10-06', 'Rak Depan', 2, '2019-10-06 07:36:47', '2019-10-06 07:36:47'),
 (8, 1, 'ABCD02E', '2019-10-06', 'Rak Depan', 1, '2019-10-06 07:36:47', '2019-10-06 07:36:47'),
 (9, 1, 'ABCD04E', '2019-10-06', 'Rak Depan', 1, '2019-10-06 07:36:47', '2019-10-06 07:36:47'),
 (10, 1, 'ABCD05E', '2019-10-06', 'Rak Depan', 1, '2019-10-06 07:36:47', '2019-10-06 07:36:47'),
 (11, 1, 'ABCD06E', '2019-10-06', 'Rak Depan', 1, '2019-10-06 07:36:47', '2019-10-06 07:36:47'),
 (12, 1, 'ABCD07E', '2019-10-06', 'Rak Depan', 1, '2019-10-06 07:36:47', '2019-10-06 07:36:47'),
-(13, 2, 'ABCD16E', '2019-10-06', 'Rak Depan', 1, '2019-10-06 07:36:47', '2019-10-06 07:36:47'),
-(14, 2, 'ABCD18E', '2019-10-06', 'Rak Depan', 1, '2019-10-06 07:36:47', '2019-10-06 07:36:47');
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `supplier`
---
-
-CREATE TABLE `supplier` (
-  `id` int(11) NOT NULL,
-  `name` varchar(50) DEFAULT NULL,
-  `no_telp` varchar(12) DEFAULT NULL,
-  `email` varchar(50) DEFAULT NULL,
-  `status` tinyint(1) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+(13, 2, 'ABCD16E', '2019-10-06', 'Rak Depan', 2, '2019-10-06 07:36:47', '2019-10-07 16:18:53'),
+(14, 2, 'ABCD18E', '2019-10-06', 'Rak Depan', 2, '2019-10-06 07:36:47', '2019-10-19 14:38:28');
 
 -- --------------------------------------------------------
 
@@ -268,6 +266,7 @@ CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `no_telp` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `isActive` tinyint(1) NOT NULL,
   `type` tinyint(1) NOT NULL,
@@ -279,11 +278,12 @@ CREATE TABLE `users` (
 -- Dumping data untuk tabel `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `isActive`, `type`, `created_at`, `updated_at`) VALUES
-(1, 'Owner', 'owner@mail.com', '$2y$10$HlqTLOGEhTl.SG9qHC18w..4Cm2UkP2T8ywp4GTrzduIh4wB2HJsi', 1, 1, '2019-09-19 07:26:06', '2019-09-19 07:26:06'),
-(2, 'Admin', 'admin@mail.com', '$2y$10$CJwtg18LMZ.GhTFMCI1jyOBiHAIvoFy4GjatICx15IEtg2OhoeG3q', 1, 2, '2019-09-19 07:26:34', '2019-09-19 07:26:34'),
-(3, 'Supplier', 'supplier@mail.com', '$2y$10$U/ciTVVAkoc/qt/GZEV11uDhY.01ttrkPsR8NzoUReTdi21HAfsPm', 1, 3, '2019-09-19 07:27:01', '2019-09-19 07:27:01'),
-(4, 'Petugas', 'petugas@mail.com', '$2y$10$SbAAxxKcff4IIVAF5o.ohuowPc6VuMNDTPGuDzVYdjyi1arQvUpzW', 1, 4, '2019-09-19 07:27:22', '2019-09-19 07:27:22');
+INSERT INTO `users` (`id`, `name`, `email`, `no_telp`, `password`, `isActive`, `type`, `created_at`, `updated_at`) VALUES
+(1, 'Owner', 'owner@mail.com', '082235698798', '$2y$10$Ow4p7kfvtokIw0iadjXmNukn/B5V94e45wqoJ8R0nqrChq3DB7ENa', 1, 1, '2019-09-19 07:26:06', '2019-10-21 14:31:01'),
+(2, 'Admin', 'admin@mail.com', '081337356987', '$2y$10$CJwtg18LMZ.GhTFMCI1jyOBiHAIvoFy4GjatICx15IEtg2OhoeG3q', 1, 2, '2019-09-19 07:26:34', '2019-09-19 07:26:34'),
+(3, 'Bumi Mas', 'supplier@mail.com', '082234578965', '$2y$10$U/ciTVVAkoc/qt/GZEV11uDhY.01ttrkPsR8NzoUReTdi21HAfsPm', 1, 3, '2019-09-19 07:27:01', '2019-10-21 14:32:39'),
+(4, 'Petugas', 'petugas@mail.com', '087321654789', '$2y$10$SbAAxxKcff4IIVAF5o.ohuowPc6VuMNDTPGuDzVYdjyi1arQvUpzW', 1, 4, '2019-09-19 07:27:22', '2019-09-19 07:27:22'),
+(5, 'Sumber Makmus', 'sumbermas@mail.com', '0361789654', '$2y$10$axYHDGB5WmwvP5.bvMmPMO/ksyZm88nTosBPgACeQSaSXlGMMu6C.', 1, 3, '2019-10-21 14:19:11', '2019-10-21 14:34:42');
 
 -- --------------------------------------------------------
 
@@ -363,15 +363,15 @@ ALTER TABLE `retur`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `stock_barang`
+-- Indexes for table `retur_detail`
 --
-ALTER TABLE `stock_barang`
+ALTER TABLE `retur_detail`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `supplier`
+-- Indexes for table `stock_barang`
 --
-ALTER TABLE `supplier`
+ALTER TABLE `stock_barang`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -428,10 +428,10 @@ ALTER TABLE `kategori`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `retur`
+-- AUTO_INCREMENT for table `retur_detail`
 --
-ALTER TABLE `retur`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `retur_detail`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `stock_barang`
@@ -440,16 +440,10 @@ ALTER TABLE `stock_barang`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- AUTO_INCREMENT for table `supplier`
---
-ALTER TABLE `supplier`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `vendor`

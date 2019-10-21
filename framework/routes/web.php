@@ -52,7 +52,7 @@ Route::group(['prefix' => 'backend', 'middleware' => 'auth', 'as'=>'backend'], f
     | Barang Web Routes
     |--------------------------------------------------------------------------
     */
-    Route::group(['prefix' => 'barang','middleware' => ['role:owner-access|admin-access'], 'as'=>'.barang'], function() {
+    Route::group(['prefix' => 'barang','middleware' => ['role:owner-access|admin-access|petugas-access'], 'as'=>'.barang'], function() {
 
         /*
         |--------------------------------------------------------------------------
@@ -88,7 +88,7 @@ Route::group(['prefix' => 'backend', 'middleware' => 'auth', 'as'=>'backend'], f
    | Data Barang Masuk Web Routes
    |--------------------------------------------------------------------------
    */
-    Route::group(['prefix' => 'barang-masuk','as'=>'.barang_masuk'], function() {
+    Route::group(['prefix' => 'barang-masuk','middleware' => ['role:owner-access|admin-access'],'as'=>'.barang_masuk'], function() {
         Route::get('/', 'Backend\BarangMasukController@index')->name('.manage');
         Route::any('/json_data', 'Backend\BarangMasukController@json_data')->name('.json_data');
         Route::get('/create', 'Backend\BarangMasukController@create')->name('.create');
@@ -101,11 +101,42 @@ Route::group(['prefix' => 'backend', 'middleware' => 'auth', 'as'=>'backend'], f
    | Data Barang Keluar Web Routes
    |--------------------------------------------------------------------------
    */
-    Route::group(['prefix' => 'barang-keluar','as'=>'.barang_keluar'], function() {
+    Route::group(['prefix' => 'barang-keluar','middleware' => ['role:owner-access|admin-access'],'as'=>'.barang_keluar'], function() {
         Route::get('/', 'Backend\BarangKeluarController@index')->name('.manage');
         Route::any('/json_data', 'Backend\BarangKeluarController@json_data')->name('.json_data');
         Route::get('/create', 'Backend\BarangKeluarController@create')->name('.create');
         Route::post('/create', 'Backend\BarangKeluarController@store')->name('.store');
         Route::get('/detail/{id}', 'Backend\BarangKeluarController@detail')->name('.detail');
+    });
+
+    /*
+   |--------------------------------------------------------------------------
+   | Data Retur Web Routes
+   |--------------------------------------------------------------------------
+   */
+    Route::group(['prefix' => 'retur','middleware' => ['role:owner-access|admin-access'],'as'=>'.retur'], function() {
+        Route::get('/', 'Backend\ReturController@index')->name('.manage');
+        Route::any('/json_data', 'Backend\ReturController@json_data')->name('.json_data');
+        Route::get('/create', 'Backend\ReturController@create')->name('.create');
+        Route::post('/create', 'Backend\ReturController@store')->name('.store');
+        Route::get('/detail/{id}', 'Backend\ReturController@detail')->name('.detail');
+    });
+
+    /*
+  |--------------------------------------------------------------------------
+  | Data Pengguna Web Routes
+  |--------------------------------------------------------------------------
+  */
+    Route::group(['prefix' => 'user','as'=>'.user'], function() {
+        Route::get('/owner', 'Backend\UserController@owner')->middleware('role:owner-access')->name('.owner');
+        Route::get('/admin', 'Backend\UserController@admin')->middleware('role:owner-access')->name('.admin');
+        Route::get('/petugas', 'Backend\UserController@petugas')->middleware('role:owner-access')->name('.petugas');
+        Route::get('/supplier', 'Backend\UserController@supplier')->middleware('role:owner-access')->name('.supplier');
+
+        Route::any('/json_data/{type}', 'Backend\UserController@json_data')->middleware('role:owner-access')->name('.json_data');
+        Route::get('/create/{type}', 'Backend\UserController@create')->middleware('role:owner-access')->name('.create');
+        Route::post('/create/{type}', 'Backend\UserController@store')->middleware('role:owner-access')->name('.store');
+        Route::get('/edit/{id}', 'Backend\UserController@edit')->name('.edit');
+        Route::post('/edit/{id}', 'Backend\UserController@update')->name('.update');
     });
 });

@@ -9,28 +9,35 @@
 											<a href="{{ route('backend.dashboard') }}" class="kt-menu__link"><span class="kt-menu__link-text">Dashboard</span></a>
 										</li>
 
+                                        @if(Auth::user()->type != 4)
 										<!-- START MENU KATEGORI -->
 										<li class="kt-menu__item @if (Str::is('*.kategori.*', Route::currentRouteName())) kt-menu__item--open @endif">
 											<a href="{{ route('backend.kategori.manage') }}" class="kt-menu__link"><span class="kt-menu__link-text">Kategori</span></a>
 										</li>
-										<!-- END MENU BARANG -->
+										<!-- END MENU KATEGORI -->
+                                        @endif
 
-										<!-- START MENU KATEGORI -->
+                                        @if(Auth::user()->type != 4)
+										<!-- START MENU VENDOR -->
 										<li class="kt-menu__item @if (Str::is('*.vendor.*', Route::currentRouteName())) kt-menu__item--open @endif">
 											<a href="{{ route('backend.vendor.manage') }}" class="kt-menu__link"><span class="kt-menu__link-text">Vendor</span></a>
 										</li>
-										<!-- END MENU BARANG -->
+										<!-- END MENU VENDOR -->
+                                        @endif
+
 
 										<!-- START MENU BARANG -->
 										<li class="kt-menu__item kt-menu__item--submenu kt-menu__item--rel @if (Str::is('*.barang.*', Route::currentRouteName())) kt-menu__item--open @endif" data-ktmenu-submenu-toggle="click" aria-haspopup="true">
 											<a href="javascript:;" class="kt-menu__link kt-menu__toggle"><span class="kt-menu__link-text">Barang</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
 											<div class="kt-menu__submenu kt-menu__submenu--classic kt-menu__submenu--left">
 												<ul class="kt-menu__subnav">
+                                                    @if(Auth::user()->type != 4)
 													<li class="kt-menu__item  @if (Str::is('*.barang.data.*', Route::currentRouteName())) kt-menu__item--active @endif" aria-haspopup="true">
 														<a href="{{ route('backend.barang.data.manage') }}" class="kt-menu__link ">
 															<i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Data Barang</span>
 														</a>
 													</li>
+                                                    @endif
 													<li class="kt-menu__item @if (Str::is('*.barang.stock.*', Route::currentRouteName())) kt-menu__item--active @endif" aria-haspopup="true">
 														<a href="{{ route('backend.barang.stock.manage') }}" class="kt-menu__link ">
 															<i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Stock Barang</span>
@@ -41,8 +48,10 @@
 										</li>
 										<!-- END MENU BARANG -->
 
+                                        @if(Auth::user()->type != 4)
 										<!-- START MENU TRANSAKSI -->
-										<li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--rel" data-ktmenu-submenu-toggle="click" aria-haspopup="true"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><span class="kt-menu__link-text">Transaksi</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
+										<li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--rel " data-ktmenu-submenu-toggle="click" aria-haspopup="true">
+                                            <a href="javascript:;" class="kt-menu__link kt-menu__toggle"><span class="kt-menu__link-text">Transaksi</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
 											<div class="kt-menu__submenu kt-menu__submenu--classic kt-menu__submenu--left">
 												<ul class="kt-menu__subnav">
 													<li class="kt-menu__item @if (Str::is('*.barang_masuk.*', Route::currentRouteName())) kt-menu__item--active @endif" aria-haspopup="true">
@@ -77,13 +86,24 @@
 											</div>
 										</li>
 										<!-- END MENU TRANSAKSI -->
+                                        @endif
 
+                                        @if(Auth::user()->type != 4)
+                                        <!-- START MENU RETUR -->
+                                        <li class="kt-menu__item @if (Str::is('*.retur.*', Route::currentRouteName())) kt-menu__item--open @endif">
+                                            <a href="{{ route('backend.retur.manage') }}" class="kt-menu__link"><span class="kt-menu__link-text">Retur</span></a>
+                                        </li>
+                                        <!-- END MENU RETUR -->
+                                        @endif
+
+                                        @can('owner-access')
 										<!-- START MENU PENGGUNA -->
-										<li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--rel" data-ktmenu-submenu-toggle="click" aria-haspopup="true"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><span class="kt-menu__link-text">Pengguna</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
+										<li class="kt-menu__item  kt-menu__item--submenu kt-menu__item--rel @if (Str::is('*.user.*', Route::currentRouteName())) kt-menu__item--open @endif" data-ktmenu-submenu-toggle="click" aria-haspopup="true">
+                                            <a href="javascript:;" class="kt-menu__link kt-menu__toggle"><span class="kt-menu__link-text">Pengguna</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
 											<div class="kt-menu__submenu kt-menu__submenu--classic kt-menu__submenu--left">
 												<ul class="kt-menu__subnav">
-													<li class="kt-menu__item" aria-haspopup="true">
-														<a href="dashboards/fluid&demo=demo4.html" class="kt-menu__link ">
+													<li class="kt-menu__item @if (Str::is('*.owner', Route::currentRouteName())) kt-menu__item--active @endif" aria-haspopup="true">
+														<a href="{{ route('backend.user.owner') }}" class="kt-menu__link ">
 															<span class="kt-menu__link-icon">
 																<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
 																	<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -96,8 +116,8 @@
 															<span class="kt-menu__link-text">Owner</span>
 														</a>
 													</li>
-													<li class="kt-menu__item" aria-haspopup="true">
-														<a href="dashboards/fluid&demo=demo4.html" class="kt-menu__link ">
+                                                    <li class="kt-menu__item @if (Str::is('*.admin', Route::currentRouteName())) kt-menu__item--active @endif" aria-haspopup="true">
+														<a href="{{ route('backend.user.admin') }}" class="kt-menu__link ">
 															<span class="kt-menu__link-icon">
 																<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
 																	<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -110,8 +130,8 @@
 															<span class="kt-menu__link-text">Admin</span>
 														</a>
 													</li>
-													<li class="kt-menu__item" aria-haspopup="true">
-														<a href="dashboards/fluid&demo=demo4.html" class="kt-menu__link ">
+													<li class="kt-menu__item @if (Str::is('*.petugas', Route::currentRouteName())) kt-menu__item--active @endif" aria-haspopup="true">
+														<a href="{{ route('backend.user.petugas') }}" class="kt-menu__link ">
 															<span class="kt-menu__link-icon">
 																<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
 																	<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -124,8 +144,8 @@
 															<span class="kt-menu__link-text">Petugas</span>
 														</a>
 													</li>
-													<li class="kt-menu__item" aria-haspopup="true">
-														<a href="dashboards/fluid&demo=demo4.html" class="kt-menu__link ">
+													<li class="kt-menu__item @if (Str::is('*.supplier', Route::currentRouteName())) kt-menu__item--active @endif" aria-haspopup="true">
+														<a href="{{ route('backend.user.supplier') }}" class="kt-menu__link ">
 															<span class="kt-menu__link-icon">
 																<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
 																	<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -142,6 +162,8 @@
 											</div>
 										</li>
 										<!-- END MENU PENGGUNA -->
+                                        @endcan
+
 									</ul>
 								</div>
 							</div>
