@@ -15,18 +15,18 @@
         <div class="kt-container ">
             <div class="kt-subheader__main">
                 <h3 class="kt-subheader__title">
-                    Barang Keluar </h3>
+                    Pemesanan </h3>
                 <div class="kt-subheader__breadcrumbs">
                     <a href="#" class="kt-subheader__breadcrumbs-home">
                         <i class="flaticon2-shelter"></i>
                     </a>
                     <span class="kt-subheader__breadcrumbs-separator"></span>
-                    <a href="{{ route('backend.dashboard') }}" class="kt-subheader__breadcrumbs-link">
-                        Backend
+                    <a href="{{ route('supplier.dashboard') }}" class="kt-subheader__breadcrumbs-link">
+                        Supplier
                     </a>
                     <span class="kt-subheader__breadcrumbs-separator"></span>
-                    <a href="{{ route('backend.barang_keluar.manage') }}" class="kt-subheader__breadcrumbs-link">
-                        Barang Keluar
+                    <a href="{{ route('supplier.pemesanan.manage') }}" class="kt-subheader__breadcrumbs-link">
+                        Pemesanan
                     </a>
                     <span class="kt-subheader__breadcrumbs-separator"></span>
                     <a href="" class="kt-subheader__breadcrumbs-link">
@@ -48,7 +48,7 @@
                     <div class="kt-portlet__head">
                         <div class="kt-portlet__head-label">
                             <h3 class="kt-portlet__head-title">
-                                Barang Keluar
+                                Pemesanan
                             </h3>
                         </div>
                     </div>
@@ -56,22 +56,23 @@
                     <!--begin::Form-->
 
                     <div class="kt-portlet__body">
-
+                        @if($model->barang_keluar->status == 2)
+                            @if(is_null($model->pembayaran))
+                                <a href="{{ route('supplier.pembayaran.create', $model->id) }}" class="btn btn-info">Bayar Pesanan</a>
+                            @endif
+                        @endif
+                        <br>
                         <div class="form-group">
                             {!! Form::label('no_faktur', 'No Faktur'); !!}
                             <p class="form-control-static">{{ $model->id }}</p>
                         </div>
                         <div class="form-group">
-                            {!! Form::label('id_supplier', 'Supplier'); !!}
-                            <p class="form-control-static">{{ $model->supplier->name }}</p>
-                        </div>
-                        <div class="form-group">
                             {!! Form::label('transaction_date', 'Tanggal Transaksi'); !!}
-                            <p class="form-control-static">{{ date('d/m/Y',strtotime($model->transaction_date)) }}</p>
+                            <p class="form-control-static">{{ date('d/m/Y',strtotime($model->created_at)) }}</p>
                         </div>
                         <div class="form-group">
                             {!! Form::label('total', 'Total Transaksi'); !!}
-                            <p class="form-control-static">Rp. {{ number_format($model->total,0,',','.') }}</p>
+                            <p class="form-control-static">Rp. {{ number_format($model->barang_keluar->total,0,',','.') }}</p>
                         </div>
                         <div class="form-group">
                             {!! Form::label('description', 'Keterangan'); !!}
@@ -79,12 +80,12 @@
                         </div>
                         <div class="form-group">
                             {!! Form::label('status', 'Status'); !!}
-                            <p class="form-control-static">{{ ['1'=>'Selesai','2'=>'Pesanan Supplier','3'=>'Sudah Dibayar','4'=>'Dikirim ke Supplier','5'=>'Dibatalkan'][$model->status]}}</p>
+                            <p class="form-control-static">{{ ['1'=>'Selesai','2'=>'Belum Dibayar','3'=>'Sudah Dibayar','4'=>'Sedang Dikirim','5'=>'Dibatalkan'][$model->barang_keluar->status]}}</p>
                         </div>
                     </div>
                     <div class="kt-portlet__foot">
                         <div class="kt-form__actions">
-                            <a href="{{ route('backend.barang_keluar.manage') }}" class="btn btn-secondary">Kembali</a>
+                            <a href="{{ route('supplier.pemesanan.manage') }}" class="btn btn-secondary">Kembali</a>
                         </div>
                     </div>
 
@@ -112,7 +113,9 @@
                             <tr>
                                 <th>#</th>
                                 <th>Nama Barang</th>
-                                <th>Serial Number</th>
+                                <th>Qty</th>
+                                <th>Harga</th>
+                                <th>Total</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -121,7 +124,9 @@
                             <tr>
                                 <th scope="row">{{ $no }}</th>
                                 <td>{{ $detail->barang->name }}</td>
-                                <td>{{ $detail->stock->serial_number }}</td>
+                                <td>{{ $detail->qty }}</td>
+                                <td>{{ number_format($detail->barang->price,0,',','.') }}</td>
+                                <td>{{ number_format($detail->qty*$detail->barang->price,0,',','.') }}</td>
                             </tr>
                             @php $no++; @endphp
                             @endforeach
@@ -131,6 +136,26 @@
                     </div>
                 </div>
                 <!--end::Portlet-->
+
+                @if(!is_null($model->pembayaran))
+                <!--begin::Portlet-->
+                <div class="kt-portlet">
+                    <div class="kt-portlet__head">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">
+                                Detail Pembayaran
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="kt-portlet__body">
+
+                        <img src="{{ url('images/'.$model->pembayaran->images) }}" width="500">
+
+                    </div>
+                </div>
+                <!--end::Portlet-->
+
+                @endif
             </div>
 
         </div>

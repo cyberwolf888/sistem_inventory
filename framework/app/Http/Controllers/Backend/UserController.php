@@ -50,6 +50,7 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'no_telp' => 'required|unique:users',
+            'address' => 'required',
             'password' => 'required|string|min:8|confirmed',
             'isActive' => 'required'
         ];
@@ -59,6 +60,7 @@ class UserController extends Controller
         $model->name = $request->name;
         $model->email = $request->email;
         $model->no_telp = $request->no_telp;
+        $model->address = $request->address;
         $model->password = Hash::make($request->password);
         $model->isActive = $request->isActive;
         $model->type = $type;
@@ -81,6 +83,7 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email',
             'no_telp' => 'required',
+            'address' => 'required',
             'isActive' => 'required'
         ];
         if(!is_null( $request->password)){
@@ -98,6 +101,7 @@ class UserController extends Controller
         $model->name = $request->name;
         $model->email = $request->email;
         $model->no_telp = $request->no_telp;
+        $model->address = $request->address;
         $model->isActive = $request->isActive;
         $model->save();
 

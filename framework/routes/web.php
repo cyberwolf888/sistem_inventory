@@ -3,11 +3,18 @@
 Auth::routes();
 
 Route::get('/', function () {
+    if(Auth::check()){
+        if(Auth::user()->type == 3){
+            return redirect()->route( 'supplier.dashboard');
+        }else{
+            return redirect()->route( 'backend.dashboard');
+        }
+    }
     return redirect('login');
 });
 
 Route::get('/home', function () {
-    return redirect('backend');
+    return redirect('/');
 });
 
 /*
@@ -16,6 +23,7 @@ Route::get('/home', function () {
 |--------------------------------------------------------------------------
 */
 Route::group(['prefix' => 'backend', 'middleware' => 'auth', 'as'=>'backend'], function() {
+
     Route::get('/', 'Backend\DashboardController@index')->name('.dashboard');
 
     /*
@@ -139,4 +147,40 @@ Route::group(['prefix' => 'backend', 'middleware' => 'auth', 'as'=>'backend'], f
         Route::get('/edit/{id}', 'Backend\UserController@edit')->name('.edit');
         Route::post('/edit/{id}', 'Backend\UserController@update')->name('.update');
     });
+});
+
+/*
+|--------------------------------------------------------------------------
+| Backend Web Routes
+|--------------------------------------------------------------------------
+*/
+Route::group(['prefix' => 'supplier', 'middleware' => 'auth', 'as'=>'supplier'], function() {
+
+    Route::get('/', 'Supplier\DashboardController@index')->name('.dashboard');
+
+    /*
+   |--------------------------------------------------------------------------
+   | Pemsanan Web Routes
+   |--------------------------------------------------------------------------
+   */
+    Route::group(['prefix' => 'pemesanan','middleware' => ['role:supplier-access'],'as'=>'.pemesanan'], function() {
+        Route::get('/', 'Supplier\PemesananController@index')->name('.manage');
+        Route::any('/json_data', 'Supplier\PemesananController@json_data')->name('.json_data');
+        Route::any('/data_barang', 'Supplier\PemesananController@data_barang')->name('.data_barang');
+        Route::any('/check_stock', 'Supplier\PemesananController@check_stock')->name('.check_stock');
+        Route::get('/create', 'Supplier\PemesananController@create')->name('.create');
+        Route::post('/create', 'Supplier\PemesananController@store')->name('.store');
+        Route::get('/detail/{id}', 'Supplier\PemesananController@detail')->name('.detail');
+    });
+
+    /*
+   |--------------------------------------------------------------------------
+   | Pembayaran Web Routes
+   |--------------------------------------------------------------------------
+   */
+    Route::group(['prefix' => 'pembayaran','middleware' => ['role:supplier-access'],'as'=>'.pembayaran'], function() {
+        Route::get('/{id_pemesanan}', 'Supplier\PembayaranController@create')->name('.create');
+        Route::post('/{id_pemesanan}', 'Supplier\PembayaranController@store')->name('.store');
+    });
+
 });

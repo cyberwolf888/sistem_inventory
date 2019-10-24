@@ -88,6 +88,10 @@
                                     {!! Form::text('transaction_date', isset($update) ? date('d/m/Y',strtotime($model->transaction_date)) : null, ['id'=>'transaction_date', 'class'=>'form-control','required']); !!}
                                 </div>
                                 <div class="form-group">
+                                    {!! Form::label('total', 'Total Transaksi'); !!}
+                                    {!! Form::text('total', $model->total, ['class'=>'form-control','required']); !!}
+                                </div>
+                                <div class="form-group">
                                     {!! Form::label('description', 'Keterangan'); !!}
                                     {!! Form::textArea('description', $model->description, ['class'=>'form-control','required', 'rows'=>'3']); !!}
                                 </div>

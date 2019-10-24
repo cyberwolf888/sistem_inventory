@@ -85,8 +85,9 @@
                                                 <option value="">All</option>
                                                 <option value="1">Selesai</option>
                                                 <option value="2">Pesanan Supplier</option>
-                                                <option value="3">Dikirim Ke Supplier</option>
-                                                <option value="4">Dibatalkan</option>
+                                                <option value="3">Sudah Dibayar</option>
+                                                <option value="4">Dikirim Ke Supplier</option>
+                                                <option value="5">Dibatalkan</option>
                                             </select>
                                         </div>
                                     </div>
@@ -182,6 +183,13 @@
                         }
                     },
                     {
+                        field: 'total',
+                        title: 'Total',
+                        template: function(row,i) {
+                            return "Rp. " + row.total.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+                        }
+                    },
+                    {
                         field: 'transaction_date',
                         title: 'Tanggal Transaksi',
                     },
@@ -193,8 +201,9 @@
                             var status = {
                                 1: {'title': 'Selesai', 'class': 'kt-badge--success'},
                                 2: {'title': 'Pesanan Supplier', 'class': ' kt-badge--warning'},
-                                3: {'title': 'Dikirim Ke Supplier', 'class': ' kt-badge--info'},
-                                4: {'title': 'Dibatalkan', 'class': ' kt-badge--danger'},
+                                3: {'title': 'Sudah Dibayar', 'class': ' kt-badge--info'},
+                                4: {'title': 'Dikirim Ke Supplier', 'class': ' kt-badge--info'},
+                                5: {'title': 'Dibatalkan', 'class': ' kt-badge--danger'},
                             };
                             return '<span class="kt-badge ' + status[row.status].class + ' kt-badge--inline kt-badge--pill">' + status[row.status].title + '</span>';
                         },

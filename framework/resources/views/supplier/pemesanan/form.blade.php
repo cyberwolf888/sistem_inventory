@@ -1,4 +1,4 @@
-@extends('layouts.backend')
+@extends('layouts.supplier')
 
 @push('vendor_css')
 
@@ -15,18 +15,18 @@
         <div class="kt-container ">
             <div class="kt-subheader__main">
                 <h3 class="kt-subheader__title">
-                    Barang Keluar </h3>
+                    Pemesanan </h3>
                 <div class="kt-subheader__breadcrumbs">
                     <a href="#" class="kt-subheader__breadcrumbs-home">
                         <i class="flaticon2-shelter"></i>
                     </a>
                     <span class="kt-subheader__breadcrumbs-separator"></span>
-                    <a href="{{ route('backend.dashboard') }}" class="kt-subheader__breadcrumbs-link">
-                        Backend
+                    <a href="{{ route('supplier.dashboard') }}" class="kt-subheader__breadcrumbs-link">
+                        Supplier
                     </a>
                     <span class="kt-subheader__breadcrumbs-separator"></span>
-                    <a href="{{ route('backend.barang_keluar.manage') }}" class="kt-subheader__breadcrumbs-link">
-                        Barang Keluar
+                    <a href="{{ route('supplier.pemesanan.manage') }}" class="kt-subheader__breadcrumbs-link">
+                        Pemesanan
                     </a>
                     <span class="kt-subheader__breadcrumbs-separator"></span>
                     <a href="" class="kt-subheader__breadcrumbs-link">
@@ -44,7 +44,7 @@
 
     <!-- begin:: Content -->
     <div class="kt-container  kt-grid__item kt-grid__item--fluid">
-        {!! Form::open(['route' => isset($update) ? ['backend.barang_keluar.update', $model->id] :'backend.barang_keluar.store', 'method' => 'post', 'class'=>'kt-form']) !!}
+        {!! Form::open(['route' => isset($update) ? ['supplier.pemesanan.update', $model->id] :'supplier.pemesanan.store', 'method' => 'post', 'class'=>'kt-form']) !!}
         <div class="row">
                 <div class="col-md-6">
                     <!--begin::Portlet-->
@@ -52,7 +52,7 @@
                         <div class="kt-portlet__head">
                             <div class="kt-portlet__head-label">
                                 <h3 class="kt-portlet__head-title">
-                                    Form Barang Keluar
+                                    Form Pemesanan
                                 </h3>
                             </div>
                         </div>
@@ -76,31 +76,23 @@
                                 @endif
 
                                 <div class="form-group">
-                                    {!! Form::label('id_supplier', 'Supplier'); !!}
-                                    {!! Form::select('id_supplier', \App\User::where('type',3)->where('isActive',1)->pluck('name','id'), $model->id_supplier, ['class'=>'form-control','required']); !!}
-                                </div>
-                                <div class="form-group">
-                                    {!! Form::label('transaction_date', 'Tanggal Transaksi'); !!}
-                                    {!! Form::text('transaction_date', isset($update) ? date('d/m/Y',strtotime($model->transaction_date)) : null, ['id'=>'transaction_date', 'class'=>'form-control','required']); !!}
-                                </div>
-                                <div class="form-group">
-                                    {!! Form::label('label_total', 'Total Transaksi'); !!}
-                                    {!! Form::text('label_total', isset($update) ? $model->total : null, ['id'=>'label_total','class'=>'form-control','required','readonly']); !!}
-                                    <input type="hidden" name="total" value="{{ $model->total }}" id="total">
+                                    {!! Form::label('address', 'Alamat Pengiriman'); !!}
+                                    {!! Form::text('address', isset($update) ? $model->address : Auth::user()->address, ['class'=>'form-control','required']); !!}
                                 </div>
                                 <div class="form-group">
                                     {!! Form::label('description', 'Keterangan'); !!}
                                     {!! Form::textArea('description', $model->description, ['class'=>'form-control','required', 'rows'=>'3']); !!}
                                 </div>
                                 <div class="form-group">
-                                    {!! Form::label('status', 'Status'); !!}
-                                    {!! Form::select('status', ['1'=>'Selesai','2'=>'Pesanan Supplier','3'=>'Sudah Dibayar','4'=>'Dikirim ke Supplier','5'=>'Dibatalkan'], $model->status, ['class'=>'form-control','required']); !!}
+                                    {!! Form::label('label_total', 'Total Transaksi'); !!}
+                                    {!! Form::text('label_total', isset($update) ? $model->total : null, ['id'=>'label_total','class'=>'form-control','required','readonly']); !!}
+                                    <input type="hidden" name="total" value="{{ $model->total }}" id="total">
                                 </div>
                             </div>
                             <div class="kt-portlet__foot">
                                 <div class="kt-form__actions">
                                     <button type="submit" class="btn btn-primary">Simpan</button>
-                                    <a href="{{ route('backend.barang_keluar.manage') }}" class="btn btn-secondary">Batal</a>
+                                    <a href="{{ route('supplier.pemesanan.manage') }}" class="btn btn-secondary">Batal</a>
                                 </div>
                             </div>
 
@@ -139,10 +131,9 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Serial Number</th>
                                     <th>Nama Barang</th>
                                     <th>Harga</th>
-                                    <th>Tanggal Masuk</th>
+                                    <th width="100px">Qty</th>
                                     <th> </th>
                                 </tr>
                                 </thead>
@@ -183,6 +174,12 @@
     var total_transaksi = 0;
     var selected_stock = [];
 
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     if (KTUtil.isRTL()) {
         arrows = {
             leftArrow: '<i class="la la-angle-right"></i>',
@@ -218,27 +215,25 @@
         if(barang.length > 0){
             var isexist = selected_stock.filter(p => p.id == id_stock);
             //console.log(isexist);
-            if(isexist.length == 0){
+            if(isexist.length === 0){
                 selected_stock.push(barang[0]);
-                total_transaksi+=barang[0].barang.price;
-                $("#total").val(total_transaksi);
-                $("#label_total").val(total_transaksi.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.'));
+                total_transaksi+=barang[0].price;
                 detail_barang.empty();
                 detail_barang_keluar.empty();
                 var no = 1;
                 for(i=0; i<selected_stock.length; i++){
                     var html = '<tr class="tr_'+ selected_stock[i].id +'">\n' +
                         '       <td>'+ no +'</td>\n' +
-                        '       <td>'+ selected_stock[i].serial_number +'</td>\n' +
-                        '       <td>'+ selected_stock[i].barang.name +'</td>\n' +
-                        '       <td>'+ selected_stock[i].barang.price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') +'</td>\n' +
-                        '       <td>'+ selected_stock[i].receive_date +'</td>\n' +
-                        '       <td><button type="button" class="btn btn-danger btn-hapus" onClick="hapus_detail('+ i +')">Hapus</button></td>\n' +
+                        '       <td>'+ selected_stock[i].name +'</td>\n' +
+                        '       <td>'+ selected_stock[i].price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') +'</td>\n' +
+                        '       <td><input type="number" name="qty_stock[]" id="qty_'+ selected_stock[i].id +'" min="1" class="form-control" value="1" onchange="qty_change('+ selected_stock[i].id +')"></td>\n' +
+                        '       <td><button type="button" class="btn btn-danger btn-hapus" onClick="hapus_detail('+ selected_stock[i].id +')">Hapus</button></td>\n' +
                         '       </tr>';
                     detail_barang.append(html);
                     detail_barang_keluar.append('<input type="hidden" name="id_stock[]" value="'+ selected_stock[i].id +'" id="id_stock_'+ selected_stock[i].id +'">');
                     no++;
                 }
+                hitung_total();
             }else{
                 alert('Barang sudah dimasukan.')
             }
@@ -246,19 +241,47 @@
 
         no_detail++;
     }
+
+    function qty_change(no_detail) {
+        var barang =  selected_stock.filter(p => p.id === no_detail)[0];
+        var qty = $("#qty_"+no_detail).val();
+        $.post( "{{ route('supplier.pemesanan.check_stock') }}", { id_barang: no_detail })
+        .done(function( data ) {
+            if( parseInt(qty) > parseInt(data)){
+                alert("Stock yang tersisa untuk "  + barang.name + " hanya " + data);
+                $("#qty_"+no_detail).val(data);
+            }
+            hitung_total();
+        });
+    }
+
+    function hitung_total() {
+        var new_total = 0;
+        if(selected_stock.length > 0){
+            for(i=0; i<selected_stock.length; i++){
+                new_total+= selected_stock[i].price * $("#qty_"+selected_stock[i].id).val();
+            }
+        }
+        //console.log(new_total);
+        total_transaksi = new_total;
+        $("#total").val(total_transaksi);
+        $("#label_total").val(total_transaksi.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.'));
+    }
+
     function hapus_detail(no_detail){
-        var data =  selected_stock[no_detail];
-        console.log(data);
+        var data =  selected_stock.filter(p => p.id == no_detail)[0];
+        //console.log(data);
         $(".tr_"+data.id).remove();
         $("#id_stock_"+data.id).remove();
-        selected_stock.splice(no_detail);
+        selected_stock = selected_stock.filter(p => p.id != no_detail);
+        hitung_total();
     }
 
     $("#stock_barang").select2({
-        placeholder: "Serial Number Barang",
+        placeholder: "Pilih Barang",
         allowClear: true,
         ajax: {
-            url: "{{ route('backend.barang.stock.json_data') }}",
+            url: "{{ route('supplier.pemesanan.data_barang') }}",
             dataType: 'json',
             delay: 250,
             data: function(params) {
@@ -275,10 +298,9 @@
                 for(i=0; i<data.length; i++){
                     var item = [];
                     item["id"] = data[i].id;
-                    item["text"] = data[i].serial_number + " - " + data[i].barang.name;
+                    item["text"] = data[i].nama_sku;
                     results.push(item)
                 }
-
                 return {
                     results: results,
                     pagination: {
@@ -291,7 +313,7 @@
         escapeMarkup: function(markup) {
             return markup;
         }, // let our custom formatter work
-        minimumInputLength: 3,
+        //minimumInputLength: 3,
     });
 </script>
 @endpush

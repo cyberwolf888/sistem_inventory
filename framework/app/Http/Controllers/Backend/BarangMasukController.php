@@ -32,6 +32,7 @@ class BarangMasukController extends Controller
         $filter = [
             'id_vendor' => 'required',
             'no_faktur' => 'required',
+            'total'  => 'required|numeric',
             'transaction_date' => 'required'
         ];
         $this->validate($request,$filter);
@@ -40,6 +41,7 @@ class BarangMasukController extends Controller
         $model->id_vendor = $request->id_vendor;
         $model->no_faktur = $request->no_faktur;
         $model->transaction_date = date( 'Y-m-d', strtotime(str_replace('/', '-', $request->transaction_date )));
+        $model->total = $request->total;
         $model->description = $request->description;
         $model->status = $request->status;
         $model->save();
@@ -48,9 +50,9 @@ class BarangMasukController extends Controller
             //create stock
             $stock = new StockBarang();
             $stock->id_barang = $id_barang;
-            $stock->serial_number = $request->serial_number[$key];
+            $stock->serial_number = strtoupper($request->serial_number[$key]);
             $stock->receive_date = $model->transaction_date;
-            $stock->location = 'Rak Depan';
+            $stock->location = 'Rak Barang Masuk';
             $stock->status = 1;
             $stock->save();
 

@@ -173,6 +173,14 @@
                         title: 'Nama',
                     },
                     {
+                        field: 'email',
+                        title: 'Email',
+                    },
+                    {
+                        field: 'no_telp',
+                        title: 'No. Telp',
+                    },
+                    {
                         field: 'status',
                         title: 'Status',
                         // callback function support for column rendering

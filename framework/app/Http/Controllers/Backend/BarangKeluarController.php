@@ -32,6 +32,7 @@ class BarangKeluarController extends Controller
         $filter = [
             'id_supplier' => 'required',
             'transaction_date' => 'required',
+            'total'  => 'required|numeric',
             'status' => 'required',
             'id_stock' => 'required'
         ];
@@ -41,6 +42,7 @@ class BarangKeluarController extends Controller
         $model->id = $model->createID();
         $model->id_supplier = $request->id_supplier;
         $model->transaction_date = date( 'Y-m-d', strtotime(str_replace('/', '-', $request->transaction_date )));
+        $model->total = $request->total;
         $model->description = $request->description;
         $model->status = $request->status;
         $model->save();

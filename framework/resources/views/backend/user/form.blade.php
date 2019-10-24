@@ -89,6 +89,10 @@
                                     {!! Form::text('no_telp', $model->no_telp, ['class'=>'form-control','required']); !!}
                                 </div>
                                 <div class="form-group">
+                                    {!! Form::label('address', 'Alamat'); !!}
+                                    {!! Form::text('address', $model->address, ['class'=>'form-control','required']); !!}
+                                </div>
+                                <div class="form-group">
                                     {!! Form::label('password', 'Password'); !!}
                                     {!! Form::password('password', ['class'=>'form-control']); !!}
                                 </div>

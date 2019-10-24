@@ -1,4 +1,4 @@
-@extends('layouts.backend')
+@extends('layouts.supplier')
 
 @push('vendor_css')
 
@@ -15,18 +15,18 @@
         <div class="kt-container ">
             <div class="kt-subheader__main">
                 <h3 class="kt-subheader__title">
-                    Barang Masuk </h3>
+                    Pemesanan </h3>
                 <div class="kt-subheader__breadcrumbs">
                     <a href="#" class="kt-subheader__breadcrumbs-home">
                         <i class="flaticon2-shelter"></i>
                     </a>
                     <span class="kt-subheader__breadcrumbs-separator"></span>
-                    <a href="{{ route('backend.dashboard') }}" class="kt-subheader__breadcrumbs-link">
-                        Backend
+                    <a href="{{ route('supplier.dashboard') }}" class="kt-subheader__breadcrumbs-link">
+                        SUpplier
                     </a>
                     <span class="kt-subheader__breadcrumbs-separator"></span>
                     <a href="" class="kt-subheader__breadcrumbs-link">
-                        Barang Masuk
+                        Pemesanan
                     </a>
                     <span class="kt-subheader__breadcrumbs-separator"></span>
                     <a href="" class="kt-subheader__breadcrumbs-link">
@@ -47,13 +47,13 @@
                         <i class="kt-font-brand flaticon2-line-chart"></i>
                     </span>
                     <h3 class="kt-portlet__head-title">
-                        Data Barang Masuk
+                        Data Pemesanan
                     </h3>
                 </div>
                 <div class="kt-portlet__head-toolbar">
                     <div class="kt-portlet__head-wrapper">
                         <div class="kt-portlet__head-actions">
-                            <a href="{{ route('backend.barang_masuk.create') }}" class="btn btn-brand btn-elevate btn-icon-sm">
+                            <a href="{{ route('supplier.pemesanan.create') }}" class="btn btn-brand btn-elevate btn-icon-sm">
                                 <i class="la la-plus"></i>
                                 Tambah Data Baru
                             </a>
@@ -84,7 +84,10 @@
                                             <select class="form-control bootstrap-select" id="kt_form_status">
                                                 <option value="">All</option>
                                                 <option value="1">Selesai</option>
-                                                <option value="2">Proses</option>
+                                                <option value="2">Pesanan Belum Dibayar</option>
+                                                <option value="3">Sudah Dibayar</option>
+                                                <option value="4">Sedang Dikirim</option>
+                                                <option value="5">Dibatalkan</option>
                                             </select>
                                         </div>
                                     </div>
@@ -135,7 +138,7 @@
                 // datasource definition
                 data: {
                     type: 'remote',
-                    source: '{{ route('backend.barang_masuk.json_data') }}',
+                    source: '{{ route('supplier.pemesanan.json_data') }}',
                     pageSize: 10,
                 },
                 order: [],
@@ -169,25 +172,18 @@
                         }
                     },
                     {
-                        field: 'no_faktur',
+                        field: 'id',
                         title: 'No Faktur',
-                    },
-                    {
-                        field: 'id_vendor',
-                        title: 'Vendor',
-                        template: function(row,i) {
-                            return row.vendor.name;
-                        }
                     },
                     {
                         field: 'total',
                         title: 'Total',
                         template: function(row,i) {
-                            return "Rp. " + row.total.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+                            return "Rp. " + row.barang_keluar.total.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
                         }
                     },
                     {
-                        field: 'transaction_date',
+                        field: 'created_at',
                         title: 'Tanggal Transaksi',
                     },
                     {
@@ -197,9 +193,12 @@
                         template: function(row) {
                             var status = {
                                 1: {'title': 'Selesai', 'class': 'kt-badge--success'},
-                                2: {'title': 'Proses', 'class': ' kt-badge--danger'}
+                                2: {'title': 'Pesanan Belum Dibayar', 'class': ' kt-badge--warning'},
+                                3: {'title': 'Sudah Dibayar', 'class': ' kt-badge--info'},
+                                4: {'title': 'Pesanan Sedang Dikirim', 'class': ' kt-badge--info'},
+                                5: {'title': 'Dibatalkan', 'class': ' kt-badge--danger'},
                             };
-                            return '<span class="kt-badge ' + status[row.status].class + ' kt-badge--inline kt-badge--pill">' + status[row.status].title + '</span>';
+                            return '<span class="kt-badge ' + status[row.barang_keluar.status].class + ' kt-badge--inline kt-badge--pill">' + status[row.barang_keluar.status].title + '</span>';
                         },
                     },
                     {
@@ -211,7 +210,7 @@
                         overflow: 'visible',
                         template: function(row) {
                             return '\
-                            <a href="'+ row.link_detail +'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit Data">\
+                            <a href="'+ row.link_detail +'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Detail Transaksi">\
                                 <i class="la la-edit"></i>\
                             </a>\
                         ';

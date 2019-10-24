@@ -58,7 +58,7 @@ class LoginController extends Controller
         }
 
         if($user->can('supplier-access')) {
-            //return redirect()->route( 'backend.dashboard');
+            return redirect()->route( 'supplier.dashboard');
         }
 
         if($user->can('petugas-access')) {
