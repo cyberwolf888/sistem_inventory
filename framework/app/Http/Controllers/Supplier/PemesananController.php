@@ -92,4 +92,10 @@ class PemesananController extends Controller
         $model = Pemesanan::findOrFail($id);
         return view('supplier.pemesanan.detail', ['model'=>$model]);
     }
+
+    public function batalkan_pesanan()
+    {
+        //TODO batalkan pesanan
+    }
+
 }

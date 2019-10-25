@@ -32,6 +32,11 @@ class BarangKeluar extends Model
         return $this->belongsTo( 'App\User','id_supplier');
     }
 
+    public function pemesanan()
+    {
+        return $this->hasOne( 'App\Models\Pemesanan', 'id_barang_keluar');
+    }
+
     public function getLinkDetailAttribute()
     {
         return route('backend.barang_keluar.detail',['id'=>$this->id]);

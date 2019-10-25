@@ -115,6 +115,9 @@ Route::group(['prefix' => 'backend', 'middleware' => 'auth', 'as'=>'backend'], f
         Route::get('/create', 'Backend\BarangKeluarController@create')->name('.create');
         Route::post('/create', 'Backend\BarangKeluarController@store')->name('.store');
         Route::get('/detail/{id}', 'Backend\BarangKeluarController@detail')->name('.detail');
+
+        Route::get('/terima/{id}', 'Backend\BarangKeluarController@terima_pembayaran')->name('.terima_pembayaran');
+        Route::get('/tolak/{id}', 'Backend\BarangKeluarController@tolak_pembayaran')->name('.tolak_pembayaran');
     });
 
     /*
@@ -151,7 +154,7 @@ Route::group(['prefix' => 'backend', 'middleware' => 'auth', 'as'=>'backend'], f
 
 /*
 |--------------------------------------------------------------------------
-| Backend Web Routes
+| Supplier Web Routes
 |--------------------------------------------------------------------------
 */
 Route::group(['prefix' => 'supplier', 'middleware' => 'auth', 'as'=>'supplier'], function() {

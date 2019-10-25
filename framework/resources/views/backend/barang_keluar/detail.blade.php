@@ -96,17 +96,57 @@
             </div>
 
             <div class="col-md-6">
+                @if(!is_null($model->pemesanan))
                 <!--begin::Portlet-->
                 <div class="kt-portlet">
                     <div class="kt-portlet__head">
                         <div class="kt-portlet__head-label">
                             <h3 class="kt-portlet__head-title">
-                                Detail Barang
+                                Detail Barang Yang Dipesan
                             </h3>
                         </div>
                     </div>
                     <div class="kt-portlet__body">
 
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nama Barang</th>
+                                <th>Qty</th>
+                                <th>Harga</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @php $no = 1; @endphp
+                            @foreach($model->pemesanan->detail as $detail)
+                                <tr>
+                                    <th scope="row">{{ $no }}</th>
+                                    <td>{{ $detail->barang->name }}</td>
+                                    <td>{{ $detail->qty }}</td>
+                                    <td>{{ number_format($detail->price,0,',','.') }}</td>
+                                </tr>
+                                @php $no++; @endphp
+                            @endforeach
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <!--end::Portlet-->
+                @endif
+
+                @if(!is_null($model->detail) && count($model->detail)>0)
+                <!--begin::Portlet-->
+                <div class="kt-portlet">
+                    <div class="kt-portlet__head">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">
+                                Detail Barang Yang Dikirim
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="kt-portlet__body">
                         <table class="table">
                             <thead>
                             <tr>
@@ -131,6 +171,42 @@
                     </div>
                 </div>
                 <!--end::Portlet-->
+                @endif
+
+                @if(!is_null($model->pemesanan) && !is_null($model->pemesanan->pembayaran))
+                <!--begin::Portlet-->
+                <div class="kt-portlet">
+                    <div class="kt-portlet__head">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">
+                                Detail Pembayaran
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="kt-portlet__body">
+                        @if($model->status == 2)
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="{{ route('backend.barang_keluar.terima_pembayaran', $model->id) }}" class="btn btn-success btn-elevate btn-icon-sm">
+                                    <i class="la la-check"></i>
+                                    Terima Pembayaran
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{{ route('backend.barang_keluar.tolak_pembayaran', $model->id) }}" class="btn btn-danger btn-elevate btn-icon-sm">
+                                    <i class="la la-close"></i>
+                                    Tolak Pembayaran
+                                </a>
+                            </div>
+                        </div>
+                        <br>
+                        @endif
+                        <img src="{{ url('images/'.$model->pemesanan->pembayaran->images) }}" width="500">
+
+                    </div>
+                </div>
+                <!--end::Portlet-->
+                @endif
             </div>
 
         </div>

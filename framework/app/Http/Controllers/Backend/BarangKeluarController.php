@@ -7,6 +7,7 @@ use App\Models\BarangKeluarDetail;
 use App\Models\StockBarang;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use File;
 
 class BarangKeluarController extends Controller
 {
@@ -71,5 +72,42 @@ class BarangKeluarController extends Controller
     {
         $model = BarangKeluar::findOrFail($id);
         return view('backend.barang_keluar.detail', ['model'=>$model]);
+    }
+
+    public function terima_pembayaran($id)
+    {
+        $model = BarangKeluar::findOrFail($id);
+        if(!is_null($model->pemesanan) && !is_null($model->pemesanan->pembayaran)){
+            $model->status = 3;
+            $model->save();
+
+            return redirect()->back();
+        }
+    }
+
+    public function tolak_pembayaran($id)
+    {
+        $model = BarangKeluar::findOrFail($id);
+        if(!is_null($model->pemesanan) && !is_null($model->pemesanan->pembayaran)){
+
+            $path = base_path().'/../images';
+            File::delete($path.'/'.$model->pemesanan->pembayaran->images);
+            $model->pemesanan->pembayaran->delete();
+
+            //TODO Send Notif tolak pembayaran
+
+
+            return redirect()->back();
+        }
+    }
+
+    public function kirim_pesanan()
+    {
+        //TODO kirim pesanan
+    }
+
+    public function batalkan_pesanan()
+    {
+        //TODO batalkan pesanan
     }
 }
