@@ -101,13 +101,42 @@ class BarangKeluarController extends Controller
         }
     }
 
-    public function kirim_pesanan()
+    public function kirim_pesanan(Request $request, $id)
     {
-        //TODO kirim pesanan
+        $model = BarangKeluar::findOrFail($id);
+        foreach ( $request->id_stock as $id_stock ) {
+            $stock = StockBarang::find($id_stock);
+            $stock->status = 2;
+            $stock->save();
+
+            $detail = new BarangKeluarDetail();
+            $detail->id_barang_keluar = $model->id;
+            $detail->id_barang = $stock->id_barang;
+            $detail->id_stock = $id_stock;
+            $detail->save();
+        }
+        $model->status = 4;
+        $model->save();
+
+        return redirect()->back();
     }
 
-    public function batalkan_pesanan()
+    public function batalkan_pesanan($id)
     {
-        //TODO batalkan pesanan
+        $model = BarangKeluar::findOrFail($id);
+        $model->status = 5;
+        $model->save();
+
+        if(!is_null($model->detail) && count($model->detail)>0){
+            foreach ( $model->detail as $detail ) {
+                $stock = $detail->stock;
+                $stock->status = 1;
+                $stock->save();
+
+                $detail->delete();
+            }
+        }
+
+        return redirect()->back();
     }
 }

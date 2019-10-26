@@ -46,7 +46,7 @@
 		<!-- begin:: Header Mobile -->
 		<div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed ">
 			<div class="kt-header-mobile__logo">
-				<a href="index&demo=demo4.html">
+				<a href="{{ route('backend.dashboard') }}">
 					<img alt="Logo" src="{{ asset('/') }}media/logos/logo-4-sm.png" />
 				</a>
 			</div>
@@ -67,7 +67,7 @@
 
 							<!-- begin:: Brand -->
 							<div class="kt-header__brand   kt-grid__item" id="kt_header_brand">
-								<a class="kt-header__brand-logo" href="?page=index&demo=demo4">
+								<a class="kt-header__brand-logo" href="{{ route('backend.dashboard') }}">
 									<img alt="Logo" src="{{ asset('/') }}media/logos/logo-4.png" class="kt-header__brand-logo-default" />
 									<img alt="Logo" src="{{ asset('/') }}media/logos/logo-4-sm.png" class="kt-header__brand-logo-sticky" />
 								</a>

@@ -233,7 +233,7 @@
                         '       <td>'+ selected_stock[i].barang.name +'</td>\n' +
                         '       <td>'+ selected_stock[i].barang.price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') +'</td>\n' +
                         '       <td>'+ selected_stock[i].receive_date +'</td>\n' +
-                        '       <td><button type="button" class="btn btn-danger btn-hapus" onClick="hapus_detail('+ i +')">Hapus</button></td>\n' +
+                        '       <td><button type="button" class="btn btn-danger btn-hapus" onClick="hapus_detail('+ selected_stock[i].id +')">Hapus</button></td>\n' +
                         '       </tr>';
                     detail_barang.append(html);
                     detail_barang_keluar.append('<input type="hidden" name="id_stock[]" value="'+ selected_stock[i].id +'" id="id_stock_'+ selected_stock[i].id +'">');
@@ -247,11 +247,11 @@
         no_detail++;
     }
     function hapus_detail(no_detail){
-        var data =  selected_stock[no_detail];
-        console.log(data);
+        var data =  selected_stock.filter(p => p.id == no_detail)[0];
+        //console.log(data);
         $(".tr_"+data.id).remove();
         $("#id_stock_"+data.id).remove();
-        selected_stock.splice(no_detail);
+        selected_stock = selected_stock.filter(p => p.id != no_detail);
     }
 
     $("#stock_barang").select2({

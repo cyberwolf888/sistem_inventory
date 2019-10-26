@@ -1,4 +1,4 @@
-@extends('layouts.backend')
+@extends('layouts.supplier')
 
 @push('vendor_css')
 
@@ -21,11 +21,11 @@
                         <i class="flaticon2-shelter"></i>
                     </a>
                     <span class="kt-subheader__breadcrumbs-separator"></span>
-                    <a href="{{ route('backend.dashboard') }}" class="kt-subheader__breadcrumbs-link">
-                        Backend
+                    <a href="{{ route('supplier.dashboard') }}" class="kt-subheader__breadcrumbs-link">
+                        Supplier
                     </a>
                     <span class="kt-subheader__breadcrumbs-separator"></span>
-                    <a href="{{ route('backend.retur.manage') }}" class="kt-subheader__breadcrumbs-link">
+                    <a href="{{ route('supplier.retur.manage') }}" class="kt-subheader__breadcrumbs-link">
                         Retur
                     </a>
                     <span class="kt-subheader__breadcrumbs-separator"></span>
@@ -57,18 +57,6 @@
 
                     <div class="kt-portlet__body">
 
-                        @if($model->status == 1)
-                            <a href="{{ route('backend.retur.kirim_gudang_vendor', $model->id) }}" class="btn btn-warning">Kirim Ke Gudang Vendor</a>
-                        @endif
-
-                        @if($model->status == 2)
-                            <a href="{{ route('backend.retur.proses_gudang_vendor', $model->id) }}" class="btn btn-info">Proses Di Gudang Vendor</a>
-                        @endif
-
-                        @if($model->status == 3)
-                            <a href="{{ route('backend.retur.selesai', $model->id) }}" class="btn btn-success">Selesai</a>
-                        @endif
-
                         <div class="form-group">
                             {!! Form::label('no_faktur', 'No Faktur'); !!}
                             <p class="form-control-static">{{ $model->id }}</p>
@@ -92,7 +80,7 @@
                     </div>
                     <div class="kt-portlet__foot">
                         <div class="kt-form__actions">
-                            <a href="{{ route('backend.retur.manage') }}" class="btn btn-secondary">Kembali</a>
+                            <a href="{{ route('supplier.retur.manage') }}" class="btn btn-secondary">Kembali</a>
                         </div>
                     </div>
 

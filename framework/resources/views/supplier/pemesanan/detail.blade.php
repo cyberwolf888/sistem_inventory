@@ -1,4 +1,4 @@
-@extends('layouts.backend')
+@extends('layouts.supplier')
 
 @push('vendor_css')
 
@@ -57,9 +57,26 @@
 
                     <div class="kt-portlet__body">
                         @if($model->barang_keluar->status == 2)
-                            @if(is_null($model->pembayaran))
-                                <a href="{{ route('supplier.pembayaran.create', $model->id) }}" class="btn btn-info">Bayar Pesanan</a>
-                            @endif
+                            <div class="row">
+                                @if(is_null($model->pembayaran))
+                                <div class="col-md-6">
+                                    <a href="{{ route('supplier.pembayaran.create', $model->id) }}" class="btn btn-success btn-elevate btn-icon-sm">
+                                        <i class="la la-check"></i>
+                                        Bayar Pesanan
+                                    </a>
+                                </div>
+                                @endif
+                                <div class="col-md-6">
+                                    <a href="{{ route('supplier.pemesanan.batalkan_pesanan', $model->id) }}" class="btn btn-danger btn-elevate btn-icon-sm">
+                                        <i class="la la-close"></i>
+                                        Batalkan Pesanan
+                                    </a>
+                                </div>
+                            </div>
+                            <br>
+                        @endif
+                        @if($model->barang_keluar->status == 4)
+                                <a href="{{ route('supplier.pemesanan.kondirmasi_pesanan', $model->id) }}" class="btn btn-info">Konfirmasi Barang Diterima</a>
                         @endif
                         <br>
                         <div class="form-group">
@@ -102,7 +119,7 @@
                     <div class="kt-portlet__head">
                         <div class="kt-portlet__head-label">
                             <h3 class="kt-portlet__head-title">
-                                Detail Barang
+                                Detail Pemesanan
                             </h3>
                         </div>
                     </div>
@@ -136,6 +153,43 @@
                     </div>
                 </div>
                 <!--end::Portlet-->
+
+                @if(!is_null($model->barang_keluar->detail) && count($model->barang_keluar->detail)>0)
+                    <!--begin::Portlet-->
+                    <div class="kt-portlet">
+                        <div class="kt-portlet__head">
+                            <div class="kt-portlet__head-label">
+                                <h3 class="kt-portlet__head-title">
+                                    Detail Barang Yang Dikirim
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="kt-portlet__body">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nama Barang</th>
+                                    <th>Serial Number</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @php $no = 1; @endphp
+                                @foreach($model->barang_keluar->detail as $detail)
+                                    <tr>
+                                        <th scope="row">{{ $no }}</th>
+                                        <td>{{ $detail->barang->name }}</td>
+                                        <td>{{ $detail->stock->serial_number }}</td>
+                                    </tr>
+                                    @php $no++; @endphp
+                                @endforeach
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                    <!--end::Portlet-->
+                @endif
 
                 @if(!is_null($model->pembayaran))
                 <!--begin::Portlet-->

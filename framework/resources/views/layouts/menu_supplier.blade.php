@@ -17,7 +17,7 @@
 
                                         <!-- START MENU RETUR -->
                                         <li class="kt-menu__item @if (Str::is('*.retur.*', Route::currentRouteName())) kt-menu__item--open @endif">
-                                            <a href="{{ route('backend.retur.manage') }}" class="kt-menu__link"><span class="kt-menu__link-text">Retur</span></a>
+                                            <a href="{{ route('supplier.retur.manage') }}" class="kt-menu__link"><span class="kt-menu__link-text">Retur</span></a>
                                         </li>
                                         <!-- END MENU RETUR -->
 

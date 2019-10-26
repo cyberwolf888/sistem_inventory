@@ -65,4 +65,33 @@ class ReturController extends Controller
         $model= Retur::findOrFail($id);
         return view('backend.retur.detail',['model'=>$model]);
     }
+
+    public function kirim_gudang_vendor($id)
+    {
+        $model= Retur::findOrFail($id);
+        $model->status = 2;
+        $model->save();
+
+        return redirect()->back();
+    }
+
+    public function proses_gudang_vendor($id)
+    {
+        $model= Retur::findOrFail($id);
+        $model->status = 3;
+        $model->save();
+
+        return redirect()->back();
+    }
+
+    public function selesai($id)
+    {
+        $model= Retur::findOrFail($id);
+        $model->status = 4;
+        $model->save();
+
+        return redirect()->back();
+    }
+
+
 }

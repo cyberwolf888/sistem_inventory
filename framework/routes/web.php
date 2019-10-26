@@ -118,6 +118,8 @@ Route::group(['prefix' => 'backend', 'middleware' => 'auth', 'as'=>'backend'], f
 
         Route::get('/terima/{id}', 'Backend\BarangKeluarController@terima_pembayaran')->name('.terima_pembayaran');
         Route::get('/tolak/{id}', 'Backend\BarangKeluarController@tolak_pembayaran')->name('.tolak_pembayaran');
+        Route::post('/kirim_pesanan/{id}', 'Backend\BarangKeluarController@kirim_pesanan')->name('.kirim_pesanan');
+        Route::get('/batalkan_pesanan/{id}', 'Backend\BarangKeluarController@batalkan_pesanan')->name('.batalkan_pesanan');
     });
 
     /*
@@ -131,6 +133,9 @@ Route::group(['prefix' => 'backend', 'middleware' => 'auth', 'as'=>'backend'], f
         Route::get('/create', 'Backend\ReturController@create')->name('.create');
         Route::post('/create', 'Backend\ReturController@store')->name('.store');
         Route::get('/detail/{id}', 'Backend\ReturController@detail')->name('.detail');
+        Route::get('/kirim-gudang/{id}', 'Backend\ReturController@kirim_gudang_vendor')->name('.kirim_gudang_vendor');
+        Route::get('/proses-gudang/{id}', 'Backend\ReturController@proses_gudang_vendor')->name('.proses_gudang_vendor');
+        Route::get('/selesai/{id}', 'Backend\ReturController@selesai')->name('.selesai');
     });
 
     /*
@@ -174,6 +179,8 @@ Route::group(['prefix' => 'supplier', 'middleware' => 'auth', 'as'=>'supplier'],
         Route::get('/create', 'Supplier\PemesananController@create')->name('.create');
         Route::post('/create', 'Supplier\PemesananController@store')->name('.store');
         Route::get('/detail/{id}', 'Supplier\PemesananController@detail')->name('.detail');
+        Route::get('/batalkan/{id}', 'Supplier\PemesananController@batalkan_pesanan')->name('.batalkan_pesanan');
+        Route::get('/konfirmasi/{id}', 'Supplier\PemesananController@kondirmasi_pesanan')->name('.kondirmasi_pesanan');
     });
 
     /*
@@ -184,6 +191,17 @@ Route::group(['prefix' => 'supplier', 'middleware' => 'auth', 'as'=>'supplier'],
     Route::group(['prefix' => 'pembayaran','middleware' => ['role:supplier-access'],'as'=>'.pembayaran'], function() {
         Route::get('/{id_pemesanan}', 'Supplier\PembayaranController@create')->name('.create');
         Route::post('/{id_pemesanan}', 'Supplier\PembayaranController@store')->name('.store');
+    });
+
+    /*
+   |--------------------------------------------------------------------------
+   | Data Retur Web Routes
+   |--------------------------------------------------------------------------
+   */
+    Route::group(['prefix' => 'retur','middleware' => ['role:supplier-access'],'as'=>'.retur'], function() {
+        Route::get('/', 'Supplier\ReturController@index')->name('.manage');
+        Route::any('/json_data', 'Supplier\ReturController@json_data')->name('.json_data');
+        Route::get('/detail/{id}', 'Supplier\ReturController@detail')->name('.detail');
     });
 
 });

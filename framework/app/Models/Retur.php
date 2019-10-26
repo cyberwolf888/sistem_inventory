@@ -9,7 +9,7 @@ class Retur extends Model
     protected $table = 'retur';
     public $incrementing = false;
 
-    protected $appends = ['link_detail'];
+    protected $appends = ['link_detail','link_detail_supplier'];
 
     public function createID()
     {
@@ -35,6 +35,11 @@ class Retur extends Model
     public function getLinkDetailAttribute()
     {
         return route('backend.retur.detail',['id'=>$this->id]);
+
+    }
+    public function getLinkDetailSupplierAttribute()
+    {
+        return route('supplier.retur.detail',['id'=>$this->id]);
 
     }
 }

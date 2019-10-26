@@ -56,6 +56,27 @@
                     <!--begin::Form-->
 
                     <div class="kt-portlet__body">
+                        @if(!is_null($model->pemesanan))
+                        <div class="row">
+                            @if($model->status == 3)
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-success btn-elevate btn-icon-sm" data-toggle="modal" data-target="#kt_modal_4">
+                                    <i class="la la-check"></i>
+                                    Kirim Pesanan
+                                </button>
+                            </div>
+                            @endif
+                            @if($model->status != 5 && $model->status != 1)
+                            <div class="col-md-6">
+                                <a href="{{ route('backend.barang_keluar.batalkan_pesanan', $model->id) }}" class="btn btn-danger btn-elevate btn-icon-sm">
+                                    <i class="la la-close"></i>
+                                    Batalkan Pesanan
+                                </a>
+                            </div>
+                            @endif
+                        </div>
+                        <br>
+                        @endif
 
                         <div class="form-group">
                             {!! Form::label('no_faktur', 'No Faktur'); !!}
@@ -216,6 +237,68 @@
 
 
 
+
+
+    <!--begin::Modal-->
+    <div class="modal fade" id="kt_modal_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                {!! Form::open(['route' => ['backend.barang_keluar.kirim_pesanan', $model->id], 'method' => 'post', 'class'=>'kt-form']) !!}
+                <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    {!! Form::label('stock_barang','Barang'); !!}
+                                    {!! Form::select('stock_barang', [], null, ['id'=>'stock_barang', 'class'=>'form-control','required']); !!}
+                                </div>
+                            </div>
+                        </div>
+                        <div id="form_detail_barang">
+
+                        </div>
+                        <button type="button" class="btn btn-primary" id="btn_tambah">Tambah</button>
+                        <br><br>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Serial Number</th>
+                                <th>Nama Barang</th>
+                                <th>Harga</th>
+                                <th>Tanggal Masuk</th>
+                                <th> </th>
+                            </tr>
+                            </thead>
+                            <tbody id="detail_barang">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    Silakan Tambahkan Barang
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Kirim Pesanan</button>
+                </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
+    <!--end::Modal-->
+
 @endsection
 
 @push('vendor_script')
@@ -223,5 +306,96 @@
 @endpush
 
 @push('page_script')
+    <script>
+        var stock_barang;
+        var total_transaksi = 0;
+        var selected_stock = [];
 
+        $("#btn_tambah").click(function () {
+            tambah_detail_barang();
+        });
+
+        function tambah_detail_barang() {
+            var detail_barang = $("#detail_barang");
+            var detail_barang_keluar = $("#form_detail_barang");
+            var id_stock = $("#stock_barang").val();
+            var barang = stock_barang.filter(p => p.id == id_stock);
+
+            if(barang.length > 0){
+                var isexist = selected_stock.filter(p => p.id == id_stock);
+                //console.log(isexist);
+                if(isexist.length == 0){
+                    selected_stock.push(barang[0]);
+                    total_transaksi+=barang[0].barang.price;
+                    $("#total").val(total_transaksi);
+                    $("#label_total").val(total_transaksi.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.'));
+                    detail_barang.empty();
+                    detail_barang_keluar.empty();
+                    var no = 1;
+                    for(i=0; i<selected_stock.length; i++){
+                        var html = '<tr class="tr_'+ selected_stock[i].id +'">\n' +
+                            '       <td>'+ no +'</td>\n' +
+                            '       <td>'+ selected_stock[i].serial_number +'</td>\n' +
+                            '       <td>'+ selected_stock[i].barang.name +'</td>\n' +
+                            '       <td>'+ selected_stock[i].barang.price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') +'</td>\n' +
+                            '       <td>'+ selected_stock[i].receive_date +'</td>\n' +
+                            '       <td><button type="button" class="btn btn-danger btn-hapus" onClick="hapus_detail('+ selected_stock[i].id +')">Hapus</button></td>\n' +
+                            '       </tr>';
+                        detail_barang.append(html);
+                        detail_barang_keluar.append('<input type="hidden" name="id_stock[]" value="'+ selected_stock[i].id +'" id="id_stock_'+ selected_stock[i].id +'">');
+                        no++;
+                    }
+                }else{
+                    alert('Barang sudah dimasukan.')
+                }
+            }
+        }
+        function hapus_detail(no_detail){
+            var data =  selected_stock.filter(p => p.id == no_detail)[0];
+            //console.log(data);
+            $(".tr_"+data.id).remove();
+            $("#id_stock_"+data.id).remove();
+            selected_stock = selected_stock.filter(p => p.id != no_detail);
+        }
+
+        $("#stock_barang").select2({
+            placeholder: "Serial Number Barang",
+            allowClear: true,
+            ajax: {
+                url: "{{ route('backend.barang.stock.json_data') }}",
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term, // search term
+                        page: params.page,
+                        status: 1
+                    };
+                },
+                processResults: function(data, params) {
+                    stock_barang = data;
+                    params.page = params.page || 1;
+                    var results = [];
+                    for(i=0; i<data.length; i++){
+                        var item = [];
+                        item["id"] = data[i].id;
+                        item["text"] = data[i].serial_number + " - " + data[i].barang.name;
+                        results.push(item)
+                    }
+
+                    return {
+                        results: results,
+                        pagination: {
+                            more: false
+                        }
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function(markup) {
+                return markup;
+            }, // let our custom formatter work
+            minimumInputLength: 3,
+        });
+    </script>
 @endpush

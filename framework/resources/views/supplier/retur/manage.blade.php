@@ -1,4 +1,4 @@
-@extends('layouts.backend')
+@extends('layouts.supplier')
 
 @push('vendor_css')
 
@@ -15,18 +15,18 @@
         <div class="kt-container ">
             <div class="kt-subheader__main">
                 <h3 class="kt-subheader__title">
-                    Stock Barang </h3>
+                    Retur </h3>
                 <div class="kt-subheader__breadcrumbs">
                     <a href="#" class="kt-subheader__breadcrumbs-home">
                         <i class="flaticon2-shelter"></i>
                     </a>
                     <span class="kt-subheader__breadcrumbs-separator"></span>
-                    <a href="{{ route('backend.dashboard') }}" class="kt-subheader__breadcrumbs-link">
-                        Backend
+                    <a href="{{ route('supplier.dashboard') }}" class="kt-subheader__breadcrumbs-link">
+                        Supplier
                     </a>
                     <span class="kt-subheader__breadcrumbs-separator"></span>
                     <a href="" class="kt-subheader__breadcrumbs-link">
-                        Stock Barang
+                        Retur
                     </a>
                     <span class="kt-subheader__breadcrumbs-separator"></span>
                     <a href="" class="kt-subheader__breadcrumbs-link">
@@ -47,22 +47,10 @@
                         <i class="kt-font-brand flaticon2-line-chart"></i>
                     </span>
                     <h3 class="kt-portlet__head-title">
-                        Data Stock Barang
+                        Data Retur
                     </h3>
                 </div>
 
-                @if(Auth::user()->type !=4)
-                <div class="kt-portlet__head-toolbar">
-                    <div class="kt-portlet__head-wrapper">
-                        <div class="kt-portlet__head-actions">
-                            <a href="{{ route('backend.barang.stock.create') }}" class="btn btn-brand btn-elevate btn-icon-sm">
-                                <i class="la la-plus"></i>
-                                Tambah Data Baru
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                @endif
             </div>
             <div class="kt-portlet__body">
                 <!--begin: Search Form -->
@@ -86,9 +74,10 @@
                                         <div class="kt-form__control">
                                             <select class="form-control bootstrap-select" id="kt_form_status">
                                                 <option value="">All</option>
-                                                <option value="1">Ready</option>
-                                                <option value="2">Sold</option>
-                                                <option value="3">Retur</option>
+                                                <option value="1">Proses di Gudang</option>
+                                                <option value="2">Dikirim Ke Vendor</option>
+                                                <option value="3">Proses di Vendor</option>
+                                                <option value="4">Selesai</option>
                                             </select>
                                         </div>
                                     </div>
@@ -139,7 +128,7 @@
                 // datasource definition
                 data: {
                     type: 'remote',
-                    source: '{{ route('backend.barang.stock.json_data') }}',
+                    source: '{{ route('supplier.retur.json_data') }}',
                     pageSize: 10,
                 },
                 order: [],
@@ -173,25 +162,12 @@
                         }
                     },
                     {
-                        field: 'id_barang',
-                        title: 'Nama Barang',
-                        template: function (row) {
-                            return row.barang.name;
-                        }
+                        field: 'id',
+                        title: 'No Faktur',
                     },
                     {
-                        field: 'serial_number',
-                        title: 'Serial Number'
-                    },
-                    {
-                        field: 'location',
-                        title: 'Lokasi'
-                    },
-                    {
-                        field: 'receive_date',
-                        title: 'Tanggal Masuk',
-                        type: 'date',
-                        format: 'DD/MM/YYYY',
+                        field: 'retur_date',
+                        title: 'Tanggal Retur',
                     },
                     {
                         field: 'status',
@@ -199,14 +175,14 @@
                         // callback function support for column rendering
                         template: function(row) {
                             var status = {
-                                1: {'title': 'Ready', 'class': 'kt-badge--info'},
-                                2: {'title': 'Sold', 'class': ' kt-badge--success'},
-                                3: {'title': 'Retur', 'class': 'kt-badge--danger'}
+                                1: {'title': 'Proses di Gudang', 'class': 'kt-badge--warning'},
+                                2: {'title': 'Dikirim Ke Vendor', 'class': ' kt-badge--info'},
+                                3: {'title': 'Proses di Vendor', 'class': ' kt-badge--info'},
+                                4: {'title': 'Selesai', 'class': ' kt-badge--success'},
                             };
                             return '<span class="kt-badge ' + status[row.status].class + ' kt-badge--inline kt-badge--pill">' + status[row.status].title + '</span>';
                         },
                     },
-
                     {
                         field: 'Actions',
                         title: 'Actions',
@@ -215,22 +191,13 @@
                         autoHide: false,
                         overflow: 'visible',
                         template: function(row) {
-                            @if(Auth::user()->type != 4)
                             return '\
-                                <a href="' + row.link_edit + '" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit Data">\
-                                    <i class="la la-edit"></i>\
-                                </a>\
-                                <a href="javascript:;" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete Data">\
-                                    <i class="la la-trash"></i>\
-                                </a>\
-                            ';
-                            @else
-                                return 'No Action';
-                            @endif
+                            <a href="'+ row.link_detail_supplier +'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit Data">\
+                                <i class="la la-edit"></i>\
+                            </a>\
+                        ';
                         },
-                    }
-
-                    ],
+                    }],
 
             });
 

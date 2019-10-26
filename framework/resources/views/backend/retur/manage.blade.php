@@ -83,8 +83,10 @@
                                         <div class="kt-form__control">
                                             <select class="form-control bootstrap-select" id="kt_form_status">
                                                 <option value="">All</option>
-                                                <option value="1">Selesai</option>
-                                                <option value="2">Proses</option>
+                                                <option value="1">Proses di Gudang</option>
+                                                <option value="2">Dikirim Ke Vendor</option>
+                                                <option value="3">Proses di Vendor</option>
+                                                <option value="4">Selesai</option>
                                             </select>
                                         </div>
                                     </div>
