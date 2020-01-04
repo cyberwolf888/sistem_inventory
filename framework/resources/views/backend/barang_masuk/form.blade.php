@@ -93,7 +93,7 @@
                                 </div>
                                 <div class="form-group">
                                     {!! Form::label('description', 'Keterangan'); !!}
-                                    {!! Form::textArea('description', $model->description, ['class'=>'form-control','required', 'rows'=>'3']); !!}
+                                    {!! Form::textArea('description', $model->description, ['class'=>'form-control', 'rows'=>'3']); !!}
                                 </div>
                                 <div class="form-group">
                                     {!! Form::label('status', 'Status'); !!}

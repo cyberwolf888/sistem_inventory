@@ -87,7 +87,7 @@
                             </div>
                             <div class="form-group">
                                 {!! Form::label('id_vendor', 'Vendor'); !!}
-                                {!! Form::select('id_vendor', App\Models\Vendor::where('status','1')->pluck('name','id'), $model->vendor, ['class'=>'form-control','required']); !!}
+                                {!! Form::select('id_vendor', App\Models\Vendor::where('status','1')->pluck('name','id'), $model->id_vendor, ['class'=>'form-control','required']); !!}
                             </div>
                             <div class="form-group">
                                 {!! Form::label('price', 'Harga'); !!}

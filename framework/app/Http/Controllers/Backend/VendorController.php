@@ -36,7 +36,7 @@ class VendorController extends Controller
         $this->validate($request,$filter);
 
         $model = new Vendor();
-        $model->name = $request->name;
+        $model->name = strtoupper( $request->name);
         $model->no_telp = $request->no_telp;
         $model->email = $request->email;
         $model->status = $request->status;
@@ -63,7 +63,7 @@ class VendorController extends Controller
         ];
         $this->validate($request,$filter);
 
-        $model->name = $request->name;
+        $model->name = strtoupper( $request->name);
         $model->no_telp = $request->no_telp;
         $model->email = $request->email;
         $model->status = $request->status;

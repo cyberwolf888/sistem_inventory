@@ -64,7 +64,7 @@
                     <div class="kt-portlet__head kt-portlet__head--noborder">
                         <div class="kt-portlet__head-label">
                             <h3 class="kt-portlet__head-title">
-                                Barang Masuk
+                                Omset Setiap Bulan di Tahun {{ date('Y') }}
                             </h3>
                         </div>
 
@@ -72,7 +72,7 @@
                     <div class="kt-portlet__body kt-portlet__body--fluid kt-portlet__body--fit">
                         <div class="kt-widget4 kt-widget4--sticky">
                             <div class="kt-widget4__chart">
-                                <canvas id="kt_chart_trends_stats" style="height: 240px;"></canvas>
+                                <canvas id="kt_chart_trends_stats" style="height: 250px;"></canvas>
                             </div>
                         <!-- <div class="kt-widget4__items kt-widget4__items--bottom kt-portlet__space-x kt-margin-b-20">
                                     <div class="kt-widget4__item">
@@ -137,7 +137,7 @@
                     <div class="kt-portlet__head kt-portlet__head--noborder">
                         <div class="kt-portlet__head-label">
                             <h3 class="kt-portlet__head-title">
-                                Barang Keluar
+                                Jumlah Transaksi Setiap Bulan di Tahun {{ date('Y') }}
                             </h3>
                         </div>
 
@@ -147,7 +147,7 @@
                         <!--begin::Widget 6-->
                         <div class="kt-widget15">
                             <div class="kt-widget15__chart">
-                                <canvas id="kt_chart_sales_stats" style="height:160px;"></canvas>
+                                <canvas id="kt_chart_sales_stats" style="height:250px;"></canvas>
                             </div>
                             <!-- <div class="kt-widget15__items kt-margin-t-40">
                                 <div class="row">
@@ -245,5 +245,184 @@
 @endpush
 
 @push('page_script')
-<script src="{{ asset('/') }}js/pages/dashboard.js" type="text/javascript"></script>
+<script>
+    // Trends Stats.
+    // Based on Chartjs plugin - http://www.chartjs.org/
+    var trendsStats = function() {
+        if ($('#kt_chart_trends_stats').length == 0) {
+            return;
+        }
+        var ctx = document.getElementById("kt_chart_trends_stats").getContext("2d");
+
+        var gradient = ctx.createLinearGradient(0, 0, 0, 240);
+        gradient.addColorStop(0, Chart.helpers.color('#00c5dc').alpha(0.7).rgbString());
+        gradient.addColorStop(1, Chart.helpers.color('#f2feff').alpha(0).rgbString());
+
+        var config = {
+            type: 'line',
+            data: {
+                labels: {!! $omset['label'] !!},
+                datasets: [{
+                    label: "Omset",
+                    backgroundColor: gradient, // Put the gradient here as a fill color
+                    borderColor: '#0dc8de',
+
+                    pointBackgroundColor: Chart.helpers.color('#ffffff').alpha(0).rgbString(),
+                    pointBorderColor: Chart.helpers.color('#ffffff').alpha(0).rgbString(),
+                    pointHoverBackgroundColor: KTApp.getStateColor('danger'),
+                    pointHoverBorderColor: Chart.helpers.color('#000000').alpha(0.2).rgbString(),
+
+                    //fill: 'start',
+                    data: {!! $omset['data'] !!}
+                }]
+            },
+            options: {
+                title: {
+                    display: false,
+                },
+                tooltips: {
+                    intersect: false,
+                    mode: 'nearest',
+                    xPadding: 10,
+                    yPadding: 10,
+                    caretPadding: 10
+                },
+                legend: {
+                    display: false
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                hover: {
+                    mode: 'index'
+                },
+                scales: {
+                    xAxes: [{
+                        display: false,
+                        gridLines: false,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Month'
+                        }
+                    }],
+                    yAxes: [{
+                        display: false,
+                        gridLines: false,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Value'
+                        },
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                elements: {
+                    line: {
+                        tension: 0.19
+                    },
+                    point: {
+                        radius: 4,
+                        borderWidth: 12
+                    }
+                },
+                layout: {
+                    padding: {
+                        left: 0,
+                        right: 0,
+                        top: 5,
+                        bottom: 0
+                    }
+                }
+            }
+        };
+
+        var chart = new Chart(ctx, config);
+    };
+
+    // Sales Stats.
+    // Based on Chartjs plugin - http://www.chartjs.org/
+    var salesStats = function() {
+        if (!KTUtil.getByID('kt_chart_sales_stats')) {
+            return;
+        }
+
+        var config = {
+            type: 'line',
+            data: {
+                labels: {!! $jumlah_transaksi['label'] !!},
+                datasets: [{
+                    label: "Jumlah",
+                    borderColor: KTApp.getStateColor('brand'),
+                    borderWidth: 2,
+                    //pointBackgroundColor: KTApp.getStateColor('brand'),
+                    backgroundColor: KTApp.getStateColor('brand'),
+                    pointBackgroundColor: Chart.helpers.color('#ffffff').alpha(0).rgbString(),
+                    pointBorderColor: Chart.helpers.color('#ffffff').alpha(0).rgbString(),
+                    pointHoverBackgroundColor: KTApp.getStateColor('danger'),
+                    pointHoverBorderColor: Chart.helpers.color(KTApp.getStateColor('danger')).alpha(0.2).rgbString(),
+                    data: {!! $jumlah_transaksi['data'] !!}
+                }]
+            },
+            options: {
+                title: {
+                    display: false,
+                },
+                tooltips: {
+                    intersect: false,
+                    mode: 'nearest',
+                    xPadding: 10,
+                    yPadding: 10,
+                    caretPadding: 10
+                },
+                legend: {
+                    display: false,
+                    labels: {
+                        usePointStyle: false
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                hover: {
+                    mode: 'index'
+                },
+                scales: {
+                    xAxes: [{
+                        display: false,
+                        gridLines: false,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Month'
+                        }
+                    }],
+                    yAxes: [{
+                        display: false,
+                        gridLines: false,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Value'
+                        }
+                    }]
+                },
+
+                elements: {
+                    point: {
+                        radius: 3,
+                        borderWidth: 0,
+
+                        hoverRadius: 8,
+                        hoverBorderWidth: 2
+                    }
+                }
+            }
+        };
+
+        var chart = new Chart(KTUtil.getByID('kt_chart_sales_stats'), config);
+    };
+
+    // Class initialization on page load
+    jQuery(document).ready(function() {
+        trendsStats();
+        salesStats();
+    });
+</script>
 @endpush
