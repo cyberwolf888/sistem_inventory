@@ -1,0 +1,10 @@
+{
+    "LaravelExtraIntellisense.viewDirectorySeperator": "/framework",
+    "laravel_goto_view.folders": {
+    
+        "default": "/framework/resources/views",
+        "vendor": "/framework/resources/views/vendor"
+    },
+    "artisan.location": "/framework",
+    "laravel_goto_controller.pathController": "/framework/app/Http/Controllers"
+}

@@ -181,6 +181,7 @@
                     },
                     {
                         field: 'total',
+                        textAlign: 'right',
                         title: 'Total',
                         template: function(row,i) {
                             return "Rp. " + row.total.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');

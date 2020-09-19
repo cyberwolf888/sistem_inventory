@@ -208,6 +208,7 @@
                     },
                     {
                         field: 'price',
+                        textAlign: 'right',
                         title: 'Harga',
                         template: function (row) {
                             return row.price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');

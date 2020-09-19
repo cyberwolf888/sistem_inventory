@@ -4,6 +4,33 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Retur
+ *
+ * @property string $id
+ * @property int|null $id_supplier
+ * @property string|null $retur_date
+ * @property string|null $description
+ * @property int|null $status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ReturDetail[] $detail
+ * @property-read int|null $detail_count
+ * @property-read mixed $link_detail
+ * @property-read mixed $link_detail_supplier
+ * @property-read \App\User|null $supplier
+ * @method static \Illuminate\Database\Eloquent\Builder|Retur newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Retur newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Retur query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Retur whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Retur whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Retur whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Retur whereIdSupplier($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Retur whereReturDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Retur whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Retur whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Retur extends Model
 {
     protected $table = 'retur';

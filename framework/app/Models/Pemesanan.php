@@ -4,6 +4,34 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Pemesanan
+ *
+ * @property string $id
+ * @property int $id_supplier
+ * @property string|null $id_barang_keluar
+ * @property string|null $address
+ * @property string|null $description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\BarangKeluar|null $barang_keluar
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PemesananDetail[] $detail
+ * @property-read int|null $detail_count
+ * @property-read mixed $link_detail
+ * @property-read \App\Models\Pembayaran|null $pembayaran
+ * @property-read \App\User $supplier
+ * @method static \Illuminate\Database\Eloquent\Builder|Pemesanan newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Pemesanan newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Pemesanan query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Pemesanan whereAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pemesanan whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pemesanan whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pemesanan whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pemesanan whereIdBarangKeluar($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pemesanan whereIdSupplier($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pemesanan whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Pemesanan extends Model
 {
     protected $table = 'pemesanan';
