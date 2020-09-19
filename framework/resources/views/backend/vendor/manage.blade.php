@@ -194,8 +194,10 @@
                     {
                         field: 'created_at',
                         title: 'Tanggal Dibuat',
-                        type: 'date',
-                        format: 'DD/MM/YYYY',
+                        type: 'datetime',
+                        template: function(row) {
+                            return row.created_at;
+                        },
                     },
                     {
                         field: 'Actions',
@@ -208,9 +210,6 @@
                             return '\
                             <a href="' + row.link_edit + '" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit Data">\
                                 <i class="la la-edit"></i>\
-                            </a>\
-                            <a href="javascript:;" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete Data">\
-                                <i class="la la-trash"></i>\
                             </a>\
                         ';
                         },

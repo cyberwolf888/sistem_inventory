@@ -17,7 +17,8 @@ class DashboardController extends Controller
                             JOIN barang AS b ON b.id = d.id_barang 
                             WHERE p.id_supplier = '.Auth::user()->id.' 
                             GROUP BY d.id_barang
-                            ORDER BY jumlah DESC');
+                            ORDER BY jumlah DESC
+                            LIMIT 10');
         $chart = ['data'=>'[','label'=>'['];
         foreach ($data as $row){
             $chart['data'].= $row->jumlah . ',';
@@ -25,6 +26,13 @@ class DashboardController extends Controller
         }
         $chart['data'] = substr( $chart['data'], 0,-1) . ']';
         $chart['label'] = substr( $chart['label'], 0,-1) . ']';
-        return view('supplier.dashboard.index', ['chart'=>$chart, 'data'=>$data]);
+
+        $barang = DB::select( 'SELECT b.name,b.price,b.image,b.created_at,b.sku, count(s.id) AS stock
+                                        FROM barang AS b
+                                        LEFT JOIN (SELECT * FROM stock_barang WHERE status = 1) AS s ON s.id_barang = b.id
+                                        GROUP BY b.name
+                                        ORDER BY b.created_at DESC
+                                        LIMIT 10');
+        return view('supplier.dashboard.index', ['chart'=>$chart, 'data'=>$data, 'barang'=>$barang]);
     }
 }

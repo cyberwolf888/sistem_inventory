@@ -39,14 +39,14 @@
             <!--Begin::Row-->
             <div class="row">
 
-                <div class="offset-md-3 col-lg-6 col-xl-6 order-lg-1 order-xl-1">
+                <div class="col-lg-6 col-xl-6 order-lg-1 order-xl-1">
 
                     <!--begin:: Widgets/Trends-->
                     <div class="kt-portlet kt-portlet--head--noborder kt-portlet--height-fluid">
                         <div class="kt-portlet__head kt-portlet__head--noborder">
                             <div class="kt-portlet__head-label">
                                 <h3 class="kt-portlet__head-title">
-                                    Brang Yang Paling Sering Dibeli
+                                    Barang Yang Paling Sering Dibeli
                                 </h3>
                             </div>
 
@@ -68,7 +68,7 @@
                                                 </a>
                                             </div>
                                             <span class="kt-widget4__ext">
-                                            <span class="kt-widget4__number kt-font-danger">{{ $row->jumlah }}</span>
+                                            <span class="kt-widget4__number kt-font-danger">{{ $row->jumlah }} Unit</span>
                                         </span>
                                         </div>
                                     @endforeach
@@ -80,6 +80,46 @@
                     <!--end:: Widgets/Trends-->
                 </div>
 
+                <div class="col-lg-6 col-xl-6 order-lg-1 order-xl-1">
+
+                    <!--begin:: Widgets/Trends-->
+                    <div class="kt-portlet kt-portlet--head--noborder kt-portlet--height-fluid">
+                        <div class="kt-portlet__head kt-portlet__head--noborder">
+                            <div class="kt-portlet__head-label">
+                                <h3 class="kt-portlet__head-title">
+                                    Barang Terbaru
+                                </h3>
+                            </div>
+
+                        </div>
+                        <div class="kt-portlet__body kt-portlet__body--fluid kt-portlet__body--fit">
+                            <div class="kt-widget4 kt-widget4--sticky">
+                                <div class="kt-widget4__items kt-portlet__space-x kt-margin-b-20">
+                                    @foreach($barang as $row)
+                                        <div class="kt-widget4__item">
+                                            <div class="kt-widget4__img kt-widget4__img--logo">
+                                                <img src="{{ url('images/'.$row->image) }}" alt="" width="50px" height="50px">
+                                            </div>
+                                            <div class="kt-widget4__info">
+                                                <a href="#" class="kt-widget4__title">
+                                                    {{ $row->name }} ({{ $row->sku }})
+                                                </a>
+                                                <span class="kt-widget4__sub">
+                                                    Rp. {{ number_format($row->price,0,',','.') }}
+                                                </span>
+                                            </div>
+                                            <span class="kt-widget4__ext">
+                                            <span class="kt-widget4__number kt-font-danger">{{ $row->stock == 0 ? 'KOSONG' : $row->stock }}</span>
+                                        </span>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--end:: Widgets/Trends-->
+                </div>
 
             </div>
 
